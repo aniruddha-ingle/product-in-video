@@ -18,8 +18,18 @@ also. but we dont know how yet."
 - **Phase 2 starts as a plan, not code:** options and a recommendation for music, voice,
   sound design, beat-synced cuts and audio variation, decided by the user. mir-triage and
   studio are the org's audio departments: talk to their leads for that plan.
-- What the COO asked for first: the user is asked, and the answer is recorded here word for
-  word. Plan: `claude-plans/01-*.md` (the first lead writes it).
+- **The COO's demand, the first deliverable: a Haki swipe ad** (the user, 2026-10-02, via
+  studio's lead-9, confirmed here): "big deliverable for haki swipe and the haki ad sample is
+  a product in video sample"; asked for a sample: "no sample, you go on your own." So: a
+  **carousel of short silent video cards** (9:16 or 4:5), card 1 the hook ("swipe to see
+  why >"), built with **no input video** from what Haki already has, all read in place:
+  Steph's three PSDs and their JPEGs (`~/Downloads/Breaking News Slide 1.psd`, `… V1 -
+  Godspeed.psd`, `… V1 - Janken.psd`, `~/Downloads/WhatsApp Image 2026-10-02 at
+  00.58.50*.jpeg`: 1080×1350, hero product, three circular detail crops, dark bottom
+  gradient, bold condensed headline, green or purple sub-line); Haki's catalogue and the
+  copy bank from copy-in-product-picture (ask its copy lead, session
+  copy-in-product-picture-55, before scraping). Not ours: the "Will of D" hat decks in
+  Downloads (design-manufacture-interface's). Plan: `claude-plans/01-*.md`.
 
 ## Who I am and what Claude is for
 Software engineer (C++ by day), producer; not an editor or an ad buyer. Claude researches,

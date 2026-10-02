@@ -24,12 +24,13 @@ decide; Devin owns Haki. The machine proposes; people decide.
    `claim.sh claim <node> --branch <node>` → `git worktree add .worktrees/<node> -b <node>`
    → `graph.py set <node> state=building` (from the main checkout).
 5. Tell the user in a few lines: who you are, what exists, what is in flight, what you took.
-   If the COO's demand isn't recorded in CLAUDE.md yet, ask for it now (with your reading
-   of what it probably is), and keep building what doesn't depend on the answer.
+   If the COO's demand in CLAUDE.md has changed or is unclear, ask (with your reading), and
+   keep building what doesn't depend on the answer.
 
 ## 1. Triage
-- **The COO's demand first** (the user: "the real coo demand"). Write it down word for word
-  in the first plan and CLAUDE.md, and order the board by it.
+- **The COO's demand first** (the user: "the real coo demand"): a **silent Haki swipe ad**,
+  a carousel of short video cards, with no input sample (CLAUDE.md, Phase 1). Order the
+  board by it.
 - **Phase 1 is silent ads** (the user, 2026-10-02). Build no music, voice or sound design.
   Text and captions carry the message. The timeline format keeps an **empty audio track**,
   so phase 2 is additive. Decomposition ignores audio, or at most records its cut points
@@ -40,9 +41,10 @@ decide; Devin owns Haki. The machine proposes; people decide.
   leads (café-beat research) and studio's (samples) for it. Its approach is open: don't
   pick it alone.
 - **Every node ends in something to watch:** a short clip or a grid of variants, not prose.
-- **The thin slice before depth:** one real Haki video ad → a timeline template → one product
-  swapped (or one shot replaced) → three hooks × two durations × two formats, silent → a
-  review page, end to end and rough, before any stage is made good.
+- **The thin slice before depth:** the swipe sample. Steph's PSD look and Haki's catalogue →
+  a timeline template per card (motion on stills: pans, reveals, the detail circles, timed
+  text) → a silent carousel, a few products and hooks, two formats → a review page, end to
+  end and rough, before any stage is made good. Decomposing real video ads comes after.
 - **Don't rebuild what product-in-picture has:** product cut-outs, the catalogue, the copy
   bank, the ads analysis. Ask its leads; copy, never import across repos.
 - Devin's or the COO's words mid-demo jump the queue: the smallest visible slice now, the

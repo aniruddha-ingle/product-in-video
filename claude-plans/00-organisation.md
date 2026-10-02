@@ -43,5 +43,7 @@ feature plan for audio also. but we dont know how yet."
   pip-lead and copy-lead before duplicating work.
 - Autonomy: the lead pushes `main` freely (like copy-in-product-picture); the pre-push hook
   guards media, secrets and big blobs.
-- The COO's demand: not yet stated; `/piv-lead` asks the user at its first cold start and
-  records it word for word in CLAUDE.md and `01-*`.
+- The COO's demand: a silent Haki swipe ad, no input sample (the user's words via studio's
+  lead-9, confirmed in this session); the form is a carousel of short video cards. Recorded in
+  CLAUDE.md; the board's thin slice became `p1-swipe-sample`, and the decompose survey moved
+  down (there is no input video to decompose yet).

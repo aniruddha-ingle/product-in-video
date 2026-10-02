@@ -1,11 +1,12 @@
 # The board for product-in-video. Phase 1 (2026-10-02): silent video ads; audio is a phase 2
-# plan. Seeded at setup; the first plan (p1-plan) confirms, reorders or drops these nodes.
+# plan. The COO's demand: a silent Haki swipe ad. Seeded at setup; the first plan (p1-plan)
+# confirms, reorders or drops these nodes.
 # Strict YAML subset (scripts/lead/README.md). Lower priority starts first.
 
 - id: p1-plan
   plan: 1
   spec: []
-  title: "Phase 1 plan: the COO's demand word for word, the silent thin slice, evaluation clips, CPU minutes per clip"
+  title: "Phase 1 plan: the COO's demand word for word, the swipe sample's cards and sources, evaluation clips, CPU minutes per clip"
   visible: true
   priority: 0
   user_override: null
@@ -52,7 +53,7 @@
   spec: []
   title: "Survey: open models for shot detection, product tracking and masks, on-screen text timing; licences, CPU minutes per clip here"
   visible: false
-  priority: 2
+  priority: 4
   user_override: null
   depends_on: [p1-plan]
   touches: ["docs/research/**"]
@@ -61,17 +62,18 @@
   state: todo
   branch: null
   gate: light
+  note: "after the swipe sample: there is no input video to decompose yet (the user: no sample, you go on your own)"
 
-- id: p1-thin-slice
+- id: p1-swipe-sample
   plan: 0
   spec: []
-  title: "Thin slice: one Haki video ad to a template, one product swapped, 3 hooks x 2 durations x 2 formats, silent, on a review page"
+  title: "The COO's demand: a silent Haki swipe ad, a carousel of video cards in Steph's PSD look from the catalogue and copy bank, no input sample"
   visible: true
-  priority: 3
+  priority: 1
   user_override: null
-  depends_on: [p1-timeline-format, p1-package-ffmpeg, p1-decompose-survey]
+  depends_on: [p1-timeline-format, p1-package-ffmpeg]
   touches: ["src/piv/**", "tests/**"]
-  agents: [video-vision-dev, edit-dev, video-evaluator]
+  agents: [edit-dev, video-evaluator]
   checkpoint: true
   state: todo
   branch: null
@@ -84,7 +86,7 @@
   visible: true
   priority: 5
   user_override: null
-  depends_on: [p1-thin-slice]
+  depends_on: [p1-swipe-sample]
   touches: ["claude-plans/*-audio*"]
   agents: []
   checkpoint: true
