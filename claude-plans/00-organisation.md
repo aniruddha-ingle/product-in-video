@@ -52,3 +52,12 @@ feature plan for audio also. but we dont know how yet."
 - The org goal (the user, broadcast by design-manufacture-interface-d4): "everything goes into
   haki swipe for now. the over arching org goal is to build a swipe app for the ceo and coo to
   vote on ideas created by all departments combined."
+- Orders (the user, 2026-10-02, in piv-lead-1's chat): "you will now take orders from the gateway
+  lead and me in this chat". The gateway lead is session sample-staging-platform-ad. The user's
+  own words win on a conflict, and the standing rules (spend, media, other repos) still hold.
+  Still open: whether an item may reach the COO without the user having watched it (relayed by
+  d4, not yet confirmed by the user or the gateway); the CLAUDE.md rule holds until then.
+- Full autonomy and the COO gate (the user, 2026-10-02, in piv-lead-1's chat): "full autonomy
+  as long as you are not destructive or adding any cost, all open source". The COO gate is the
+  video-evaluator's PASS alone; "the user watched" is dropped. Recorded in CLAUDE.md and the
+  piv-lead playbook, so every piv lead reads it at cold start.
