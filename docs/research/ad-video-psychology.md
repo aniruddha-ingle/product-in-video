@@ -61,7 +61,7 @@ study to the feed is an inference, and the ratings below account for that.
    and it ends on a resolved, complete frame.
 2. **Its biggest exposure is the 3-second mark.** A scroller who leaves at 3 s has seen the
    product, the franchise and the details, but not "ARE FINALLY BACK" (3.6 s) or the URL
-   (5.0 s). Platform data say half or more of a video ad's effect lands in the first 2–3 s.
+   (5.0 s). Platform data say about half of a video ad's effect lands in the first 2–3 s.
    The staged reveal is also the clip's charm (teasing is pleasant), so it is a trade-off to
    test, not a bug to fix: prediction P3.
 3. **The swipe deck is not the feed.** Haki swipe raters watch each clip whole; feed viewers
@@ -681,4 +681,135 @@ resolves).
   directional prior strong enough to predict; if rendered, they are exploratory.
 
 ### Amendments
-(none)
+(none at commit `094f125`; appended since then:)
+
+**Amendment 1 (2026-10-02, after the evidence review, before any swipe votes on any axis).**
+P4's swipe-stage expectation ("keep rate build-up ≥ details-first, weak") and its swipe primary
+("build-up > details-first") are **withdrawn as directional**. Reason: Elsen, Pieters & Wedel
+2016 (finding 3.2) show that "mystery" structures, which details-first is, are judged
+*worse* after brief exposure and *better* after long exposure, and swipe raters watch whole
+clips. So the swipe comparison for P4 is reported two-sided and exploratory. The ads-stage
+primary (hook rate, build-up > details-first) **stands**, and the same paper strengthens it,
+since feed exposure is brief. As a result, the swipe-stage Holm family is P1, P2, P3, P5, P6
+and P8 (six comparisons); P4, P7 and P9 have no swipe primary. Nothing else changes.
+
+**Amendment 2 (2026-10-02, before any swipe votes on any axis): the power statement under
+Holm.** The power paragraph above gives uncorrected thresholds. Under Holm across the six
+swipe primaries, the smallest p-value must be below 0.05 / 6 ≈ 0.0083, which a one-sided
+sign test reaches only with **7 of 7** or **8 of 8** pairs (7 of 8 gives 0.035). So:
+- Each swipe axis needs **at least 8 matched pairs**. For P1, P2, P3, P5 and P6 that is
+  2 products (Jan-Ken, Godspeed) × 4 hook lines, fixed now: **h001, h006** ("… ARE
+  DIFFERENT"), **h010** ("… ARE ON ANOTHER LEVEL") and **h015** ("… ARE WORTH THE HYPE").
+  The hook line is a blocking factor here, as the matched-set rule already says.
+- **P8 varies the hook line itself**, so its pairs can only come from products. With two
+  products it cannot be read on the swipe. P8's swipe comparison waits until at least 8
+  products have hero and detail layers (p1-catalogue), and until then it is reported as
+  exploratory. Its ads-stage primary is unchanged.
+- Nothing else changes.
+
+## What we'd change in the default recipe now
+
+The pre-registered axes keep their default levels (the COO-loved values) until their tests
+read: changing them now would move the baseline the predictions are measured against. The
+changes below are off those axes, and none of them spends.
+
+| # | Change | Where it lives | Finding | Confidence |
+|---|---|---|---|---|
+| 1 | Upload the landing frame (our poster) as the custom thumbnail on every upload | deployment | 8.2, 1.1 | **High** that it is the better still where a still is shown; **low** that it moves hook rate in autoplaying Feed |
+| 2 | Sub-line 28 → 36 px (≈13 pt on a phone), same face and colour, after Steph's or Devin's eye | template slot size | 5.2 | **Moderate** for legibility; **low** that any metric moves |
+| 3 | A reading-time rule in the format: every text run is fully on screen for at least max(1500 ms, 500 ms + 50 ms × characters) before the clip ends or loops, and the 6 s compressor must satisfy it (line 1 → 2,150 ms; line 2 and the URL → 1,500 ms) | timeline `constraints` | 5.1 | **High**: cheap, and the reading-rate evidence is strong |
+| 4 | Silent tests run in Feed placements only, set by hand (no Advantage+ placements); Reels and Stories wait for phase-2 audio or are their own stratum | test plan | 6.1 | **Moderate** |
+| 5 | No motion in the hold: no idle "breathing", shake or flash after ≈5.4 s | recipe | 2.3 | **Low to moderate** |
+| 6 | Copy: "BACK" lines only for `restock: true` products (already the copy bank's rule); franchise-named hooks reach a real ad only after Devin answers the IP question | copy and brand data | 9.2, 9.3 | **High** (policy and law, not taste) |
+
+### What the next tests cost
+- **Swipe stage (free, CPU only).** To read P3 and P1 with 8 matched pairs each
+  (Amendment 2): 2 products × 4 hook lines = 8 base ad_keys; P3 adds 2 levels (16) and P1 adds
+  2 levels (16), for **40 ad_keys**. In 4:5 only, that is 40 clips, ≈20–40 CPU min under
+  `heavy-test`; in all three ratios, 120 clips, ≈60–120 CPU min. Then the evaluator's gate,
+  then about 40 votes each from the CEO and the COO. P8 waits for 8 products with layers.
+- **Ads stage (spends: a question for Devin, not a plan).** The baselines in the
+  sample-size table are placeholders until Haki's database gives real ones. At an *assumed*
+  Feed CPM of $5–12 (an assumption; Haki's own CPM replaces it), one hook-rate axis with
+  3 levels × ≈3,400 impressions ≈ 10,000 impressions ≈ **$50–125 per axis per placement**, and
+  one link-CTR comparison with 2 levels × ≈28,000–43,000 impressions ≈ **$280–1,000**. The
+  question for Devin: may we spend about $50–125 to read P1 on hook rate in Feed, once the IP
+  question for the franchise-named hook is answered?
+
+## Glossary
+
+- **Impression:** one time the ad was shown on someone's screen.
+- **3-second video play:** Meta's count of plays lasting at least 3 s (or nearly the whole clip
+  if it is shorter); replays aren't counted.
+- **Hook rate:** 3-second video plays ÷ impressions. The share of people who didn't scroll
+  past within 3 s. Autoplay means it can be passive.
+- **ThruPlay:** Meta's count of plays to the end of the clip, or of at least 15 s. For our
+  6–8 s clips, a ThruPlay is a completed play.
+- **Hold:** ThruPlays ÷ 3-second plays. Of those who stayed 3 s, the share who stayed to the end.
+- **Completion rate:** ThruPlays ÷ impressions.
+- **CTR (link):** link clicks ÷ impressions. Cheap clicks inflate it, so it is read with the
+  downstream cost per purchase.
+- **CPM / CPA / ROAS:** cost per thousand impressions / cost per acquisition (a purchase) /
+  revenue ÷ ad spend.
+- **Placement:** where the ad shows: Feed (scrolling posts, muted by default), Reels
+  (full-screen vertical video, sound on by default), Stories.
+- **Advantage+ placements:** Meta choosing placements automatically. It would put a silent
+  clip into Reels unless placements are set by hand.
+- **Safe zone:** the screen area that the app's own UI (name, caption, buttons) doesn't
+  cover; key text stays inside it.
+- **Thumb-stop:** the moment a scrolling viewer stops on an ad. Hook rate is its measurable
+  proxy.
+- **Delivery skew:** the platform sending most impressions to whichever variant looks best
+  early, which starves the others before the test can read them. Meta's A/B test tool splits
+  audiences to prevent it.
+- **Frequency / creative fatigue:** average impressions per person / results falling as the
+  same people see an ad again.
+- **Ken Burns effect / push-in:** slow zoom or pan across a still image to make it feel like
+  footage. Ours scales 1.08 → 1.00, which on screen is a slow zoom-out.
+- **Easing, out-cubic, out-back (overshoot):** how an animation's speed changes. Out-cubic
+  starts fast and settles; out-back goes slightly past the target and comes back, like a
+  spring.
+- **Kinetic typography:** text that moves as it enters or exits.
+- **Looming:** an object growing on screen, as if approaching. The visual system treats it as
+  urgent.
+- **Curiosity (information) gap:** awareness that a piece of information is missing, which
+  motivates finding it. A "tease" opens a gap and then closes it.
+- **Mystery ad:** an ad that withholds what it is for until later.
+- **Peak-end rule:** memory of an experience weights its most intense moment and its ending.
+- **Brand lift study:** a survey of people who saw an ad against a held-out group who didn't,
+  measuring recall, awareness or intent.
+- **Pre-registration:** writing the predictions and the analysis plan down, dated, before the
+  data exist, so results can't be re-interpreted after the fact.
+- **Matched pair:** two ads identical except on the one axis being tested.
+- **Sign test:** counts how many matched pairs favour the predicted level; with 5 of 5 the
+  chance of that by luck is 1 in 32.
+- **Holm correction:** a way to keep the overall false-positive rate at 5% when several
+  hypotheses are tested together.
+- **Power / minimum detectable effect (MDE):** the chance a test detects a true effect of a
+  given size / the smallest effect a test of a given size can reliably detect.
+- **Negative control:** an axis predicted to have no effect. A "significant" result there means
+  the set-up is noisy or skewed.
+- **Keep rate (Haki swipe):** (keep + love) ÷ all verdicts on an ad_key.
+- **ad_key:** the stable id of an ad's spec without its ratio, so its 4:5, 9:16 and 1:1 renders
+  count as one ad.
+
+## Sources read only in part, or not reached (2026-10-02)
+
+- Salminen et al. 2024 (ACM HT): full text returned 403; findings taken from the abstract and
+  the publisher's summary.
+- Banerjee & Urminsky 2024 (*Marketing Science*): Semantic Scholar returned 403; the
+  "questions reduce reading" result is from secondary summaries.
+- Fossen, Kim & Chae 2026 (*J. Marketing*): Sage returned 403; abstract-level only (the
+  paper's definition of "micro ad" is not confirmed).
+- Hüttl-Maack et al. 2024 (*JCP*), Baumgartner, Sujan & Padgett 1997 (*JMR*): 403; abstracts
+  only.
+- Meta Business Help Center, video metric definitions: the page didn't render for the
+  fetcher; the definitions come from Meta help-page snippets in search results. Re-check in
+  Ads Manager before any test.
+- Meta's March 2026 unified safe-zone spec: vendor guides only, not found on Meta's site.
+- The "1.7 s per mobile feed item" figure: widely attributed to Facebook, primary source not
+  found; not relied on.
+- "Attention allocation during viewing of one-line and two-line subtitles in vertical videos"
+  (*Applied Cognitive Psychology*, recent): paywalled (402); not used.
+- Dobres et al. 2016: the polarity cost (≈20–25%) comes from an automated PDF summary, so it is
+  approximate; the direction is the paper's.
