@@ -84,10 +84,16 @@ def build_deck(run_id: str, *, draft: bool = False) -> dict:
                 "title": f"{product} · {spec['recipe']} · {spec['duration_s']:g} s video",
                 "style": spec["template_id"],
                 "typeset": fills.get("typeset", "template"),
+                # Every choice that varies between ads (the spec minus the ratio and pinned
+                # sources), so verdicts can be read per axis (pre-registered hypotheses).
                 "axes": {
-                    "hook": fills.get("hook"),
+                    "template": spec["template_id"],
                     "recipe": spec["recipe"],
                     "duration_s": spec["duration_s"],
+                    "seed": spec.get("seed"),
+                    "render_version": spec.get("render_version"),
+                    **{k: v for k, v in fills.items() if k != "product"},
+                    **spec.get("params", {}),
                 },
                 "source": {
                     "run_id": run_id,

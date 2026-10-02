@@ -46,6 +46,8 @@ def test_only_passed_ads_are_exported():
     assert item["kind"] == "video-ad" and item["item_key"] == "product-in-video:aaaaaaaaaaaa"
     assert [v["ratio"] for v in item["videos"]] == ["4:5", "9:16", "1:1"]
     assert item["reviewed"] == {"evaluator": "PASS", "user_watched": False}
+    assert item["axes"]["hook"] == "template" and item["axes"]["recipe"] == "build-up"
+    assert item["axes"]["template"] == "t" and item["axes"]["duration_s"] == 8
     assert deck["skipped_unreviewed"] == ["bbbbbbbbbbbb"]
     for v in item["videos"]:
         assert (run / "deck" / v["src"]).exists() and (run / "deck" / v["poster"]).exists()
