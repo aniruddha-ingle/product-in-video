@@ -75,7 +75,7 @@
   touches: ["docs/contracts/swipe-*", "src/piv/deck/**", "tests/test_deck*"]
   agents: [edit-dev]
   checkpoint: false
-  state: todo
+  state: merged
   branch: null
   gate: light
   note: "the contract is ../copy-in-product-picture/docs/contracts/decisions.md: ask its lead, never edit it"
