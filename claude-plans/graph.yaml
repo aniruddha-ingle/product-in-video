@@ -44,7 +44,7 @@
   touches: ["pyproject.toml", "uv.lock", "src/piv/__init__.py", "src/piv/paths.py", "src/piv/render/**", "tests/conftest.py", "tests/test_render*", "docs/licences.md"]
   agents: [edit-dev]
   checkpoint: false
-  state: building
+  state: review
   branch: null
   gate: light
 
