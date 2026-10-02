@@ -1,0 +1,41 @@
+[project]
+name = "piv"
+version = "0.1.0"
+description = "product-in-video: video ads as programmable timelines, rendered deterministically"
+requires-python = "==3.11.*"
+# Exact pins. Each was checked for an x86_64 macOS wheel with
+# `uv pip install --dry-run --no-build --python-platform x86_64-apple-darwin --python-version 3.11`.
+dependencies = [
+    "numpy==2.4.6",
+    "pillow==12.3.0",
+    "imageio-ffmpeg==0.6.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest==9.1.1",
+    "ruff==0.16.10",
+]
+
+[build-system]
+requires = ["hatchling==1.32.4"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/piv"]
+
+[tool.uv]
+# Never build a compiled package from source on this Intel Mac.
+no-build-package = ["numpy", "pillow", "imageio-ffmpeg"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+# scripts/lead (the board tooling) and docs/research (one-off measurement scripts) are not this package.
+extend-exclude = [".worktrees", "scripts/lead", "docs/research"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
