@@ -29,7 +29,7 @@
   touches: ["docs/contracts/**", "src/piv/timeline/**", "tests/test_timeline*"]
   agents: [edit-dev]
   checkpoint: true
-  state: todo
+  state: review
   branch: null
   gate: full
 
@@ -44,7 +44,7 @@
   touches: ["pyproject.toml", "uv.lock", "src/piv/__init__.py", "src/piv/paths.py", "src/piv/render/**", "tests/conftest.py", "tests/test_render*", "docs/licences.md"]
   agents: [edit-dev]
   checkpoint: false
-  state: todo
+  state: review
   branch: null
   gate: light
 
@@ -59,7 +59,7 @@
   touches: ["docs/research/**"]
   agents: [video-vision-dev]
   checkpoint: false
-  state: todo
+  state: merged
   branch: null
   gate: light
   note: "after the swipe sample: there is no input video to decompose yet (the user: no sample, you go on your own)"
@@ -110,3 +110,51 @@
   branch: null
   gate: light
   note: "the user: next we plan feature plan for audio also. but we dont know how yet. Talk to mir-triage's and studio's leads."
+
+- id: p2-audio-notes
+  plan: 2
+  spec: []
+  title: "Phase 2 audio research, early, as notes: options and one recommendation for p2-audio-plan (no code)"
+  visible: false
+  priority: 4
+  user_override: null
+  depends_on: []
+  touches: ["claude-plans/*-audio-notes*"]
+  agents: []
+  checkpoint: false
+  state: merged
+  branch: p2-audio-notes
+  gate: light
+  note: "piv-lead-1 handed to piv-lead-2; the notes become p2-audio-plan's plan"
+
+- id: p1-review-grid
+  plan: 0
+  spec: []
+  title: "Private local review page per run: every clip muted and looped at real size per ratio, phone-width view, posters, manifest fields, a 9-frame contact sheet per clip"
+  visible: true
+  priority: 2
+  user_override: null
+  depends_on: [p1-swipe-sample]
+  touches: ["src/piv/review/**", "tests/test_review*"]
+  agents: []
+  checkpoint: false
+  state: built
+  branch: p1-review-grid
+  gate: light
+  note: "piv-lead-1 handed to piv-lead-2; never published: Haki's pixels stay local"
+
+- id: p1-ad-psychology
+  plan: 3
+  spec: []
+  title: "Research: the psychology of short silent product video ads (hook, motion on stills, reveal, detail crops, text timing, muted feed, landing frame); findings mapped to timeline axes and testable hypotheses"
+  visible: true
+  priority: 2
+  user_override: null
+  depends_on: []
+  touches: ["docs/research/ad-video-psychology.md"]
+  agents: [ads-scientist]
+  checkpoint: false
+  state: merged
+  branch: null
+  gate: light
+  note: "the user, 2026-10-02, via gateway-1: the COO loved ff1e5a2f6199 (Jan-Ken 4:5); research the cutting edge on the psychology of an ad video like this"

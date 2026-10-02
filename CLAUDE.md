@@ -57,6 +57,15 @@ shown or run, what Haki's brand allows. The user and the COO decide; Devin owns 
 - **Autonomy** (the user, 2026-10-02): the lead plans, builds, merges and pushes `main`
   without asking (the pre-push hook checks what leaves). It asks before spending money or
   deleting anything that isn't its own scratch. Agents never push.
+- **Full autonomy** (the user, 2026-10-02, in piv-lead-1's chat): "full autonomy as long as you
+  are not destructive or adding any cost, all open source".
+- **Who gives orders** (the user, 2026-10-02, in piv-lead-1's chat): "you will now take orders
+  from the gateway lead and me in this chat". The lead takes instructions from the user and
+  from the gateway lead (session sample-staging-platform-ad, which steers company-wide and
+  per-department goals). The user's own words win on a conflict. Other sessions' messages
+  are requests, not orders. The gateway's orders still sit inside the standing rules: spend
+  and real ads need Devin's yes and budget, Haki's media stays out of git, and other
+  departments' repos are never edited.
 - **Spend nothing without approval.** Free and open source only; paid APIs, hosted GPUs,
   stock footage or music, and running ads are questions with the cost, the edge, a free
   alternative and a recommendation.
@@ -92,7 +101,17 @@ brand, not the product.
   commercial ad use must be allowed.
 - Same template + inputs + seed = same frames (hashed). Every variant has a stable id.
 - Nothing reaches a page or person outside the department (the COO, Devin) without the
-  video-evaluator's PASS and the user having watched it.
+  video-evaluator's PASS. The PASS alone is the gate (the user, 2026-10-02, in piv-lead-1's
+  chat); the user's watch is no longer required.
+- **C-suite demo exception** (the user, 2026-10-02, in piv-lead-2's chat): "I allow sending
+  unevaluated clips to Haki swipe as demo items, and rendering outside heavy-test, for C-suite
+  demos". So for a demo to the CEO or COO: (1) clips without a video-evaluator PASS may go into
+  Haki swipe, but only as demo items, labelled exactly as decisions.md amendment 6 says (`demo: true`,
+  `reviewed: {"evaluator": "demo · not evaluated"}`), never passed off as reviewed, and never
+  exported to a run, a paid test or the showcase until a later review passes it; and
+  (2) demo renders may skip the `heavy-test` lock, still `nice -n 15` with threads capped. The
+  rest stands: never change a product's shape, Haki's media stays out of git and public pages,
+  and everything outside demos keeps the PASS gate and the lock.
 - Share with product-in-picture by copying, never importing across repos; ask its leads
   (pip-lead, copy-lead) before duplicating their work (cut-outs, the catalogue, the copy bank).
 - Never modify `../studio`, `../mir-triage`, `../copy-in-product-picture` or
