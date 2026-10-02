@@ -154,7 +154,7 @@
   touches: ["docs/research/ad-video-psychology.md"]
   agents: [ads-scientist]
   checkpoint: false
-  state: todo
+  state: review
   branch: null
   gate: light
   note: "the user, 2026-10-02, via gateway-1: the COO loved ff1e5a2f6199 (Jan-Ken 4:5); research the cutting edge on the psychology of an ad video like this"
