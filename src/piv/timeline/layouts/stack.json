@@ -1,0 +1,13 @@
+{
+  "kind": "layout",
+  "format_version": 0,
+  "id": "stack",
+  "description": "A design stacked as image over text (a hero and detail circles above a bottom text block). The text block keeps its size and its distance from the bottom edge, lifted to stay inside the safe zone; the fade follows it; the image group scales by k (<= 1) about the canvas centre line to fill what is above, keeping the designer's gap below it and its margin above it (scaled); the background covers the canvas. On the template's own size every rule is the identity, so the native ratio lands on the designer's frame exactly.",
+  "order": ["canvas", "text", "fade", "image"],
+  "groups": {
+    "canvas": {"rule": "cover"},
+    "text": {"rule": "bottom", "pad_px": 24, "clamp_x_to_safe": true},
+    "fade": {"rule": "follow", "of": "text"},
+    "image": {"rule": "above", "of": "text", "keep_top_margin": true, "min_scale": 0.6, "max_scale": 1}
+  }
+}
