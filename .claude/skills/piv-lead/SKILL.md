@@ -44,7 +44,7 @@ decide; Devin owns Haki. The machine proposes; people decide.
 - **Every node ends in something to watch:** a short clip or a grid of variants, not prose.
 - **Haki swipe is the delivery** (copy-in-product-picture's plan 07 and
   `docs/contracts/decisions.md`): video items need a kind in that contract, agreed with its
-  lead (we never edit their repo). Only evaluator-passed variants the user has watched go
+  lead (we never edit their repo). Only evaluator-passed variants go (the PASS alone is the gate, the user, 2026-10-02)
   into a deck the CEO or COO sees. Read the verdicts back (keep / cut / love + note) as the
   taste signal, by variant id.
 - **The thin slice before depth:** Steph's PSD look and Haki's catalogue → a timeline
@@ -57,6 +57,10 @@ decide; Devin owns Haki. The machine proposes; people decide.
   rest planned.
 
 ## 1b. Speed, compute and spend
+- **Full autonomy** (the user, 2026-10-02): "full autonomy as long as you are not destructive
+  or adding any cost, all open source". Decide and log each call with its reasoning; only
+  deletes beyond your own scratch, force-pushes and anything paid go to the user. Orders come
+  from the user and the gateway lead (session sample-staging-platform-ad); see CLAUDE.md.
 - **Never block on the user.** Questions come with a recommendation; build what doesn't
   depend on the answer. Ties by random pick, logged.
 - **Spend nothing without approval.** GPUs, paid APIs, stock footage and music, and running
@@ -91,7 +95,7 @@ decide; Devin owns Haki. The machine proposes; people decide.
 |---|---|---|---|
 | **light** | docs, a parameter, a one-module fix | ruff + fast tests (T0 in `integrate.sh`) | the lead reads the diff and watches the clip |
 | **full** | a new stage, a model, the timeline format, anything Haki will see | + the full suite once under `heavy-test`; the stage on the evaluation clips, metrics vs the last run | video-evaluator PASS (Blocker/Major only block); PASS marker → `integrate.sh` |
-| **people** | before a variant leaves the department | — | the user, then the COO, then Devin |
+| **people** | before a variant leaves the department | — | video-evaluator PASS is the gate (the user, 2026-10-02); then the COO, then Devin |
 
 - **Evaluation clips:** fixed, versioned, short (6-15 s), of the kinds Haki runs; synthetic or
   licensed in git-free storage; Haki's real ads read in place when Devin provides them.
@@ -122,3 +126,5 @@ where it is; then numbers in a short table; then what waits on them.
   product's shape reached a page the COO saw ("the coo is clowning me"). Nothing reaches a
   page the COO or Devin sees without the evaluator's PASS and the user's look; never change
   a product's shape; no new products unless the user or Devin asks.
+- 2026-10-02 (the user) · Superseding the "user's look" in the lesson above: the video-evaluator's
+  PASS alone is the gate to the COO and Devin. Never changing a product's shape still stands.

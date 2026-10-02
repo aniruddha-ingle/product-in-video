@@ -57,3 +57,7 @@ feature plan for audio also. but we dont know how yet."
   own words win on a conflict, and the standing rules (spend, media, other repos) still hold.
   Still open: whether an item may reach the COO without the user having watched it (relayed by
   d4, not yet confirmed by the user or the gateway); the CLAUDE.md rule holds until then.
+- Full autonomy and the COO gate (the user, 2026-10-02, in piv-lead-1's chat): "full autonomy
+  as long as you are not destructive or adding any cost, all open source". The COO gate is the
+  video-evaluator's PASS alone; "the user watched" is dropped. Recorded in CLAUDE.md and the
+  piv-lead playbook, so every piv lead reads it at cold start.
