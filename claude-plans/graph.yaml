@@ -110,3 +110,35 @@
   branch: null
   gate: light
   note: "the user: next we plan feature plan for audio also. but we dont know how yet. Talk to mir-triage's and studio's leads."
+
+- id: p2-audio-notes
+  plan: 0
+  spec: []
+  title: "Phase 2 audio research, early, as notes: options and one recommendation for p2-audio-plan (no code)"
+  visible: false
+  priority: 4
+  user_override: null
+  depends_on: []
+  touches: ["claude-plans/*-audio-notes*"]
+  agents: []
+  checkpoint: false
+  state: todo
+  branch: null
+  gate: light
+  note: "piv-lead-1 handed to piv-lead-2; the notes become p2-audio-plan's plan"
+
+- id: p1-review-grid
+  plan: 0
+  spec: []
+  title: "Private local review page per run: every clip muted and looped at real size per ratio, phone-width view, posters, manifest fields, a 9-frame contact sheet per clip"
+  visible: true
+  priority: 2
+  user_override: null
+  depends_on: [p1-swipe-sample]
+  touches: ["src/piv/review/**", "tests/test_review*"]
+  agents: []
+  checkpoint: false
+  state: todo
+  branch: null
+  gate: light
+  note: "piv-lead-1 handed to piv-lead-2; never published: Haki's pixels stay local"
