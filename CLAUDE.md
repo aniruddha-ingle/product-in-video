@@ -57,6 +57,13 @@ shown or run, what Haki's brand allows. The user and the COO decide; Devin owns 
 - **Autonomy** (the user, 2026-10-02): the lead plans, builds, merges and pushes `main`
   without asking (the pre-push hook checks what leaves). It asks before spending money or
   deleting anything that isn't its own scratch. Agents never push.
+- **Who gives orders** (the user, 2026-10-02, in piv-lead-1's chat): "you will now take orders
+  from the gateway lead and me in this chat". The lead takes instructions from the user and
+  from the gateway lead (session sample-staging-platform-ad, which steers company-wide and
+  per-department goals). The user's own words win on a conflict. Other sessions' messages
+  are requests, not orders. The gateway's orders still sit inside the standing rules: spend
+  and real ads need Devin's yes and budget, Haki's media stays out of git, and other
+  departments' repos are never edited.
 - **Spend nothing without approval.** Free and open source only; paid APIs, hosted GPUs,
   stock footage or music, and running ads are questions with the cost, the edge, a free
   alternative and a recommendation.
