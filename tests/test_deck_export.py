@@ -60,3 +60,10 @@ def test_nothing_reviewed_is_refused_unless_draft():
     deck = build_deck("deck-b", draft=True)
     assert deck["items"][0]["draft"] is True
     assert deck["items"][0]["reviewed"]["evaluator"] == "NOT REVIEWED"
+
+
+def test_demo_items_are_labelled():
+    _run("deck-c", {"dddddddddddd": ["4:5"]})
+    item = build_deck("deck-c", demo=True)["items"][0]
+    assert item["demo"] is True and "draft" not in item
+    assert item["reviewed"]["evaluator"] == "demo · not evaluated"

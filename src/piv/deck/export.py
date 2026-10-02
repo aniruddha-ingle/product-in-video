@@ -24,6 +24,7 @@ from piv.timeline import read_manifest
 
 DEPARTMENT = "product-in-video"
 RATIO_ORDER = ("4:5", "9:16", "1:1")
+DEMO_LABEL = "demo · not evaluated"  # decisions.md amendment 6
 
 
 class NotReviewed(RuntimeError):
@@ -38,7 +39,9 @@ def _latest(rows):
     return list(out.values())
 
 
-def build_deck(run_id: str, *, draft: bool = False) -> dict:
+def build_deck(run_id: str, *, draft: bool = False, demo: bool = False) -> dict:
+    """`demo`: a C-suite demo (decisions.md amendment 6): every ad, unevaluated ones marked
+    `demo: true` and `reviewed.evaluator: "demo · not evaluated"`."""
     run = paths.runs_dir(run_id)
     rows = _latest(read_manifest(run / "manifest.jsonl"))
     review_path = run / "review.json"
@@ -52,7 +55,8 @@ def build_deck(run_id: str, *, draft: bool = False) -> dict:
     items, skipped = [], []
     for akey in sorted(by_ad):
         verdict = review.get(akey, {})
-        if verdict.get("evaluator") != "PASS" and not draft:
+        passed = verdict.get("evaluator") == "PASS"
+        if not passed and not (draft or demo):
             skipped.append(akey)
             continue
         group = sorted(
@@ -111,10 +115,12 @@ def build_deck(run_id: str, *, draft: bool = False) -> dict:
                     f"Ratios: {', '.join(v['ratio'] for v in videos)}."
                 )[:400],
                 "reviewed": {
-                    "evaluator": verdict.get("evaluator", "NOT REVIEWED"),
+                    "evaluator": verdict.get("evaluator")
+                    or (DEMO_LABEL if demo else "NOT REVIEWED"),
                     "user_watched": bool(verdict.get("user_watched", False)),
                 },
-                **({"draft": True} if draft and verdict.get("evaluator") != "PASS" else {}),
+                **({"demo": True} if demo and not passed else {}),
+                **({"draft": True} if draft and not passed else {}),
             }
         )
     if not items:
@@ -134,8 +140,9 @@ def main(argv=None) -> None:
     ap = argparse.ArgumentParser(description="Export a run's reviewed ads as a video-ad deck")
     ap.add_argument("run_id")
     ap.add_argument("--draft", action="store_true", help="every ad, unreviewed: local tests only")
+    ap.add_argument("--demo", action="store_true", help="a C-suite demo (amendment 6), labelled")
     a = ap.parse_args(argv)
-    deck = build_deck(a.run_id, draft=a.draft)
+    deck = build_deck(a.run_id, draft=a.draft, demo=a.demo)
     print(paths.runs_dir(a.run_id) / "deck" / "deck.json", len(deck["items"]), "items")
 
 
