@@ -1,0 +1,395 @@
+{
+  "kind": "recipe",
+  "format_version": 0,
+  "id": "details-first",
+  "description": "The detail circles open the clip (the first is on screen at frame 0, the others pop in 0.3 s apart), the hook line slams in at 0.3 s, then the hero fades and settles in from 1.15 to land at 2 s; the rest of the headline lands at 3.6 s and the sub-line at 5 s; the finished frame holds to the end.",
+  "duration_ms": 6000,
+  "scaled_from": {
+    "id": "details-first",
+    "duration_ms": 8000
+  },
+  "beats": [
+    {
+      "name": "open",
+      "start_ms": 0,
+      "end_ms": 225
+    },
+    {
+      "name": "details",
+      "start_ms": 0,
+      "end_ms": 900
+    },
+    {
+      "name": "hook",
+      "start_ms": 0,
+      "end_ms": 900
+    },
+    {
+      "name": "hero",
+      "start_ms": 900,
+      "end_ms": 1500
+    },
+    {
+      "name": "headline",
+      "start_ms": 2700,
+      "end_ms": 3750
+    },
+    {
+      "name": "subline-hold",
+      "start_ms": 3750,
+      "end_ms": 6000
+    }
+  ],
+  "constraints": {
+    "min_text_hold_ms": 1500,
+    "hook_by_ms": 1000,
+    "on_screen_at_0": [
+      "detail0.mask"
+    ]
+  },
+  "tracks": {
+    "video": [
+      {
+        "key": "background",
+        "source": {
+          "kind": "template",
+          "role": "background",
+          "index": 0
+        },
+        "group": "canvas"
+      },
+      {
+        "key": "hero",
+        "source": {
+          "kind": "slot",
+          "slot": "hero"
+        },
+        "group": "image",
+        "transform": {
+          "scale": [
+            {
+              "t_ms": 900,
+              "v": 1.15
+            },
+            {
+              "t_ms": 1500,
+              "v": 1,
+              "ease": "out-cubic"
+            }
+          ]
+        },
+        "opacity": [
+          {
+            "t_ms": 0,
+            "v": 0
+          },
+          {
+            "t_ms": 900,
+            "v": 0
+          },
+          {
+            "t_ms": 1125,
+            "v": 1
+          }
+        ]
+      },
+      {
+        "key": "detail0.mask",
+        "source": {
+          "kind": "slot",
+          "slot": "details",
+          "index": 0,
+          "part": "mask"
+        },
+        "group": "image",
+        "transform": {
+          "scale": [
+            {
+              "t_ms": 0,
+              "v": 0.7
+            },
+            {
+              "t_ms": 300,
+              "v": 1,
+              "ease": "out-back"
+            }
+          ]
+        }
+      },
+      {
+        "key": "detail0.image",
+        "source": {
+          "kind": "slot",
+          "slot": "details",
+          "index": 0,
+          "part": "image"
+        },
+        "group": "image",
+        "transform": {
+          "scale": [
+            {
+              "t_ms": 0,
+              "v": 0.92
+            },
+            {
+              "t_ms": 3750,
+              "v": 1,
+              "ease": "out-quad"
+            }
+          ],
+          "anchor_to": "detail0.mask"
+        },
+        "parent": "detail0.mask",
+        "mask": "detail0.mask"
+      },
+      {
+        "key": "detail0.ring",
+        "source": {
+          "kind": "slot",
+          "slot": "details",
+          "index": 0,
+          "part": "ring"
+        },
+        "group": "image",
+        "parent": "detail0.mask"
+      },
+      {
+        "key": "detail1.mask",
+        "source": {
+          "kind": "slot",
+          "slot": "details",
+          "index": 1,
+          "part": "mask"
+        },
+        "group": "image",
+        "transform": {
+          "scale": [
+            {
+              "t_ms": 225,
+              "v": 0.7
+            },
+            {
+              "t_ms": 525,
+              "v": 1,
+              "ease": "out-back"
+            }
+          ]
+        },
+        "opacity": [
+          {
+            "t_ms": 0,
+            "v": 0
+          },
+          {
+            "t_ms": 225,
+            "v": 0
+          },
+          {
+            "t_ms": 315,
+            "v": 1
+          }
+        ]
+      },
+      {
+        "key": "detail1.image",
+        "source": {
+          "kind": "slot",
+          "slot": "details",
+          "index": 1,
+          "part": "image"
+        },
+        "group": "image",
+        "transform": {
+          "scale": [
+            {
+              "t_ms": 225,
+              "v": 0.92
+            },
+            {
+              "t_ms": 3750,
+              "v": 1,
+              "ease": "out-quad"
+            }
+          ],
+          "anchor_to": "detail1.mask"
+        },
+        "parent": "detail1.mask",
+        "mask": "detail1.mask"
+      },
+      {
+        "key": "detail1.ring",
+        "source": {
+          "kind": "slot",
+          "slot": "details",
+          "index": 1,
+          "part": "ring"
+        },
+        "group": "image",
+        "parent": "detail1.mask"
+      },
+      {
+        "key": "detail2.mask",
+        "source": {
+          "kind": "slot",
+          "slot": "details",
+          "index": 2,
+          "part": "mask"
+        },
+        "group": "image",
+        "transform": {
+          "scale": [
+            {
+              "t_ms": 450,
+              "v": 0.7
+            },
+            {
+              "t_ms": 750,
+              "v": 1,
+              "ease": "out-back"
+            }
+          ]
+        },
+        "opacity": [
+          {
+            "t_ms": 0,
+            "v": 0
+          },
+          {
+            "t_ms": 450,
+            "v": 0
+          },
+          {
+            "t_ms": 540,
+            "v": 1
+          }
+        ]
+      },
+      {
+        "key": "detail2.image",
+        "source": {
+          "kind": "slot",
+          "slot": "details",
+          "index": 2,
+          "part": "image"
+        },
+        "group": "image",
+        "transform": {
+          "scale": [
+            {
+              "t_ms": 450,
+              "v": 0.92
+            },
+            {
+              "t_ms": 3750,
+              "v": 1,
+              "ease": "out-quad"
+            }
+          ],
+          "anchor_to": "detail2.mask"
+        },
+        "parent": "detail2.mask",
+        "mask": "detail2.mask"
+      },
+      {
+        "key": "detail2.ring",
+        "source": {
+          "kind": "slot",
+          "slot": "details",
+          "index": 2,
+          "part": "ring"
+        },
+        "group": "image",
+        "parent": "detail2.mask"
+      },
+      {
+        "key": "fade0",
+        "source": {
+          "kind": "template",
+          "role": "gradient",
+          "index": 0
+        },
+        "group": "fade",
+        "extend": "down"
+      },
+      {
+        "key": "fade1",
+        "source": {
+          "kind": "template",
+          "role": "gradient",
+          "index": 1
+        },
+        "group": "fade",
+        "extend": "down"
+      },
+      {
+        "key": "fade2",
+        "source": {
+          "kind": "template",
+          "role": "gradient",
+          "index": 2
+        },
+        "group": "fade",
+        "extend": "down"
+      }
+    ],
+    "text": [
+      {
+        "key": "headline",
+        "slot": "headline",
+        "group": "text",
+        "content": {
+          "fill": "hook"
+        },
+        "runs": [
+          {
+            "lines": "first",
+            "start_ms": 225,
+            "end_ms": 6000,
+            "enter": {
+              "duration_ms": 188,
+              "ease": "out-cubic",
+              "opacity": 0,
+              "scale": 1.6
+            }
+          },
+          {
+            "lines": "rest",
+            "start_ms": 2700,
+            "end_ms": 6000,
+            "enter": {
+              "duration_ms": 225,
+              "ease": "out-cubic",
+              "opacity": 0,
+              "dy": 40
+            }
+          }
+        ]
+      },
+      {
+        "key": "subline",
+        "slot": "subline",
+        "group": "text",
+        "content": {
+          "fill": "subline"
+        },
+        "color": {
+          "fill": "accent"
+        },
+        "runs": [
+          {
+            "lines": "all",
+            "start_ms": 3750,
+            "end_ms": 6000,
+            "enter": {
+              "duration_ms": 300,
+              "ease": "out-quad",
+              "opacity": 0,
+              "dy": 16
+            }
+          }
+        ]
+      }
+    ],
+    "audio": []
+  }
+}
