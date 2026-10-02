@@ -112,7 +112,7 @@
   note: "the user: next we plan feature plan for audio also. but we dont know how yet. Talk to mir-triage's and studio's leads."
 
 - id: p2-audio-notes
-  plan: 0
+  plan: 2
   spec: []
   title: "Phase 2 audio research, early, as notes: options and one recommendation for p2-audio-plan (no code)"
   visible: false
@@ -122,8 +122,8 @@
   touches: ["claude-plans/*-audio-notes*"]
   agents: []
   checkpoint: false
-  state: todo
-  branch: null
+  state: review
+  branch: p2-audio-notes
   gate: light
   note: "piv-lead-1 handed to piv-lead-2; the notes become p2-audio-plan's plan"
 
@@ -138,7 +138,7 @@
   touches: ["src/piv/review/**", "tests/test_review*"]
   agents: []
   checkpoint: false
-  state: todo
+  state: building
   branch: null
   gate: light
   note: "piv-lead-1 handed to piv-lead-2; never published: Haki's pixels stay local"
