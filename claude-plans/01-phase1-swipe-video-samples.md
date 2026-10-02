@@ -122,3 +122,18 @@ layers, which p1-swipe-sample's first commit produces.
    later.
 3. **Captions:** a silent ad from stills has no speech to caption, so the headline is the
    caption. *Recommend no separate caption track in phase 1;* the format keeps a text track for it.
+
+## Amendment 1 (2026-10-02, copy-lead-1's answer)
+- Read in place, read-only: catalogue, templates, **and the copy bank** (not copied). Each video
+  records the copy bank's git sha, the template's `source.sha256` and the sha256 of every
+  image file it used, so drift shows. Paths come from `$CUTOUT_HOME` (default `~/.cutout`)
+  through our paths module; never hard-coded. Before reading the catalogue, check that no
+  `cutout catalogue build` is running. Read optional fields defensively and check `format_version`.
+- Fonts: their whole `fonts/registry.yaml` (8 OFL type sets), so videos share the font axis and
+  ids with the stills. Faces are cached per (typeset, role, size).
+- Steph's own detail layers are for **jan-ken and godspeed only**. Other products wait for
+  p1-catalogue's details (its fix round is with the pip-lead; there's no date yet).
+- `decisions.md` is copy-lead-1's: we send the video item's shape, and they write amendment 4.
+  pip-lead-2 owns playback on the page. Nothing goes to the CEO or COO before our own gate.
+- Decided (piv-lead-1, no blocking): the first deck starts with Jan-Ken and Godspeed only
+  (2 products × 2 hooks × 3 ratios = 12 clips). Catalogue products join when details land.
