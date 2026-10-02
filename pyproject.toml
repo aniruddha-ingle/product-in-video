@@ -31,8 +31,8 @@ no-build-package = ["numpy", "pillow", "imageio-ffmpeg"]
 [tool.ruff]
 line-length = 100
 target-version = "py311"
-# scripts/lead is the lead's board tooling (stdlib, its own style), not this package.
-extend-exclude = [".worktrees", "scripts/lead"]
+# scripts/lead (the board tooling) and docs/research (one-off measurement scripts) are not this package.
+extend-exclude = [".worktrees", "scripts/lead", "docs/research"]
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "B", "UP"]
