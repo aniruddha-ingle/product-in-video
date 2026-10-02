@@ -1,22 +1,61 @@
 {
   "kind": "ratios",
   "format_version": 0,
-  "note": "Fractions of the canvas kept clear on each side. `safe`: where text must sit. `content_safe`: where the product and detail circles must sit. 9:16 is Meta's Reels/Stories rule (\"roughly 14% of the top, 35% of the bottom, and 6% on each side\", Meta Ads Guide, read 2026-10-02 by copy-in-product-picture, variant.md 'Layout flavours'). Meta publishes no overlay for feed 4:5 and 1:1; the 4% text margin there is this department's own rule, so text never touches an edge.",
+  "note": "Fractions of the canvas kept clear on each side. `safe`: where text must sit. `content_safe`: where the product and detail circles must sit. 9:16 is Meta's Reels/Stories rule (\"roughly 14% of the top, 35% of the bottom, and 6% on each side\", Meta Ads Guide, read 2026-10-02 by copy-in-product-picture, variant.md 'Layout flavours'). Meta publishes no overlay for feed 4:5 and 1:1; the 4% text margin there is this department's own rule, so text never touches an edge. 2026-10-02 (piv-lead-1): 9:16 now uses Meta's Stories safe zone (about 14% / 250 px clear at the top and bottom, 6% sides) instead of Reels' 35% bottom: silent ads run in Feed and Stories, not Reels (Reels default to sound on; docs/research/ad-video-psychology.md), and the Reels zone shrank the design to 0.71 with a dead black band (the user: \"wtf is the blackness at the bottom\"). A Reels profile returns with audio in phase 2.",
   "ratios": {
     "4:5": {
-      "size": [1080, 1350],
-      "safe": {"top": 0.04, "bottom": 0.04, "left": 0.04, "right": 0.04},
-      "content_safe": {"top": 0, "bottom": 0, "left": 0, "right": 0}
+      "size": [
+        1080,
+        1350
+      ],
+      "safe": {
+        "top": 0.04,
+        "bottom": 0.04,
+        "left": 0.04,
+        "right": 0.04
+      },
+      "content_safe": {
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 0
+      }
     },
     "1:1": {
-      "size": [1080, 1080],
-      "safe": {"top": 0.04, "bottom": 0.04, "left": 0.04, "right": 0.04},
-      "content_safe": {"top": 0, "bottom": 0, "left": 0, "right": 0}
+      "size": [
+        1080,
+        1080
+      ],
+      "safe": {
+        "top": 0.04,
+        "bottom": 0.04,
+        "left": 0.04,
+        "right": 0.04
+      },
+      "content_safe": {
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 0
+      }
     },
     "9:16": {
-      "size": [1080, 1920],
-      "safe": {"top": 0.14, "bottom": 0.35, "left": 0.06, "right": 0.06},
-      "content_safe": {"top": 0.14, "bottom": 0.35, "left": 0.06, "right": 0.06}
+      "size": [
+        1080,
+        1920
+      ],
+      "safe": {
+        "top": 0.14,
+        "bottom": 0.14,
+        "left": 0.06,
+        "right": 0.06
+      },
+      "content_safe": {
+        "top": 0.14,
+        "bottom": 0.14,
+        "left": 0.06,
+        "right": 0.06
+      }
     }
   }
 }
