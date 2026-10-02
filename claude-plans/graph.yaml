@@ -122,8 +122,8 @@
   touches: ["claude-plans/*-audio-notes*"]
   agents: []
   checkpoint: false
-  state: building
-  branch: null
+  state: review
+  branch: p2-audio-notes
   gate: light
   note: "piv-lead-1 handed to piv-lead-2; the notes become p2-audio-plan's plan"
 
