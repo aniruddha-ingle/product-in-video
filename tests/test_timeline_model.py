@@ -26,7 +26,9 @@ HOOK = "HOOK LINE\nSECOND LINE"
 
 @pytest.fixture(scope="module")
 def timeline() -> Timeline:
-    return build_timeline(load_recipe("build-up"), synthetic_template(), "9:16", headline=HOOK)
+    return build_timeline(
+        load_recipe("build-up"), synthetic_template(), "9:16", headline=HOOK
+    )
 
 
 def _doc(tl: Timeline) -> dict:

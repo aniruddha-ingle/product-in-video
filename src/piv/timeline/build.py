@@ -50,7 +50,9 @@ class _Template:
     def __init__(self, t: dict):
         v = t.get("format_version")
         if v not in SUPPORTED_TEMPLATE_VERSIONS:
-            raise Refused(f"template format_version {v!r} is not one this build reads (1)")
+            raise Refused(
+                f"template format_version {v!r} is not one this build reads (1)"
+            )
         self.t = t
         self.id = t["id"]
         self.size = tuple(t["size"])
@@ -84,7 +86,9 @@ class _Template:
         raise Refused(f"unknown slot {slot!r}")
 
     def role_layer_id(self, role: str, index: int) -> str:
-        found = [x for x in self.layers if x.get("role") == role and x.get("visible", True)]
+        found = [
+            x for x in self.layers if x.get("role") == role and x.get("visible", True)
+        ]
         if not 0 <= index < len(found):
             raise Refused(
                 f"template {self.id!r} has {len(found)} visible {role!r} layer(s), the recipe needs #{index}"
@@ -142,7 +146,9 @@ def build_timeline(
             is_image = src.get("slot") == "hero" or src.get("part") == "image"
             if is_image and key in swaps:
                 if key not in placements:
-                    raise Refused(f"swap for {key!r} has no placement box; refusing to guess one")
+                    raise Refused(
+                        f"swap for {key!r} has no placement box; refusing to guess one"
+                    )
                 new_src = Source.from_json(swaps[key], f"swaps[{key}]")
                 box = tuple(frac(c) for c in placements[key])
             else:
@@ -153,11 +159,15 @@ def build_timeline(
                 box = tuple(frac(c) for c in tpl.layer(lid)["bbox"])
         elif src.kind == "template" and src.get("role"):
             lid = tpl.role_layer_id(src.get("role"), src.get("index", 0))
-            new_src = Source("template", {"role": src.get("role"), "index": src.get("index", 0)})
+            new_src = Source(
+                "template", {"role": src.get("role"), "index": src.get("index", 0)}
+            )
             box = tuple(frac(c) for c in tpl.layer(lid)["bbox"])
         else:
             if v.box is None:
-                raise Refused(f"video {v.key!r}: a {src.kind} source in a recipe needs a box")
+                raise Refused(
+                    f"video {v.key!r}: a {src.kind} source in a recipe needs a box"
+                )
             new_src = src
             box = tuple(frac(c) for c in v.box)
         if v.key in masked:
@@ -175,7 +185,9 @@ def build_timeline(
         stack = tpl.index[lid] if lid is not None else last_stack
         last_stack = stack
         resolved.append((stack, order, v, new_src, box, extent))
-    resolved.sort(key=lambda r: (r[0], r[1]))  # the designer's stacking, recipe order on ties
+    resolved.sort(
+        key=lambda r: (r[0], r[1])
+    )  # the designer's stacking, recipe order on ties
 
     # ---- resolve text blocks
     blocks = []  # (block, design box, design anchor)
@@ -195,13 +207,19 @@ def build_timeline(
         color = b.color
         default_color = tx.get("rendered_color") or tx.get("color")
         if isinstance(color, dict) and color.get("fill") == "accent":
-            color = accent or (tpl.slots.get("accent") or {}).get("default") or default_color
+            color = (
+                accent
+                or (tpl.slots.get("accent") or {}).get("default")
+                or default_color
+            )
         elif color is None:
             color = default_color
         n = len(content.split("\n"))
         max_lines = b.max_lines if b.max_lines is not None else tx.get("max_lines")
         if max_lines is not None and n > max_lines:
-            raise Refused(f"text {b.key!r}: {n} lines, the template's box takes {max_lines}")
+            raise Refused(
+                f"text {b.key!r}: {n} lines, the template's box takes {max_lines}"
+            )
         runs = []
         for r in b.runs:
             lines = resolve_lines(r.lines, n)
@@ -216,7 +234,8 @@ def build_timeline(
             runs=tuple(runs),
             content=content,
             color=color,
-            font=b.font or FontRef(postscript=tx.get("font"), typeset=typeset, role=b.slot),
+            font=b.font
+            or FontRef(postscript=tx.get("font"), typeset=typeset, role=b.slot),
             size=b.size if b.size is not None else tx.get("size"),
             tracking=b.tracking if b.tracking is not None else tx.get("tracking", 0),
             leading=b.leading if b.leading is not None else tx.get("leading"),
@@ -263,7 +282,9 @@ def build_timeline(
             x0, x1 = max(x0, m.clamp_x[0]), min(x1, m.clamp_x[1])
         a = None if anchor is None else tuple(_n(c) for c in m.point(*anchor))
         size = blk.size if m.k == 1 else _n(frac(blk.size) * m.k)
-        text.append(replace(blk, box=(_n(x0), _n(y0), _n(x1), _n(y1)), anchor=a, size=size))
+        text.append(
+            replace(blk, box=(_n(x0), _n(y0), _n(x1), _n(y1)), anchor=a, size=size)
+        )
 
     tl = Timeline(
         canvas=Canvas(ratio=ratio, size=canvas_size(ratio)),

@@ -94,11 +94,16 @@ def main(argv=None) -> None:
     ap.add_argument("--run-id", default=datetime.now(UTC).strftime("%Y%m%d-sample"))
     a = ap.parse_args(argv)
     for ratio in a.ratios.split(","):
-        row = render_one(brand=a.brand, template_id=a.template, product=a.product, ratio=ratio,
-                         recipe_name=a.recipe, duration_ms=a.duration_ms, run_id=a.run_id)  # fmt: skip
-        print(json.dumps({"ratio": ratio, "variant_id": row.variant_id, "ad_key": row.ad_key,
-                          "clip": str(paths.runs_dir(a.run_id) / row.clip),
-                          "cpu_s": (row.cpu_ms or 0) / 1000, "wall_s": (row.wall_ms or 0) / 1000}))  # fmt: skip
+        row = render_one(
+            brand=a.brand, template_id=a.template, product=a.product, ratio=ratio,
+            recipe_name=a.recipe, duration_ms=a.duration_ms, run_id=a.run_id,
+        )  # fmt: skip
+        out = {
+            "ratio": ratio, "variant_id": row.variant_id, "ad_key": row.ad_key,
+            "clip": str(paths.runs_dir(a.run_id) / row.clip),
+            "cpu_s": (row.cpu_ms or 0) / 1000, "wall_s": (row.wall_ms or 0) / 1000,
+        }  # fmt: skip
+        print(json.dumps(out))
 
 
 if __name__ == "__main__":

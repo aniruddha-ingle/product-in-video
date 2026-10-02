@@ -17,7 +17,10 @@ from piv.timeline.synthetic import synthetic_template
 
 
 @pytest.fixture(scope="module")
-def template(isolated_homes):
+def template(isolated_homes, tmp_path_factory):
+    # Our own CUTOUT_HOME: the session one must stay empty (test_render_encode checks it).
+    mp = pytest.MonkeyPatch()
+    mp.setenv("CUTOUT_HOME", str(tmp_path_factory.mktemp("cutout_compose")))
     t = synthetic_template()
     tdir = paths.cutout_home() / "templates" / t["id"]
     (tdir / "layers").mkdir(parents=True, exist_ok=True)
@@ -34,7 +37,8 @@ def template(isolated_homes):
             px[..., 3] = (((xx - w / 2) ** 2 + (yy - h / 2) ** 2) < r * r) * 255
         Image.fromarray(px, "RGBA").save(tdir / layer["png"])
     (tdir / "template.json").write_text(json.dumps(t))
-    return t
+    yield t
+    mp.undo()
 
 
 @pytest.fixture(autouse=True)

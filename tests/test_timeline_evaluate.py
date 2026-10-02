@@ -23,7 +23,9 @@ HOOK = "HOOK LINE\nSECOND LINE"
 
 @pytest.fixture(scope="module")
 def tl():
-    return build_timeline(load_recipe("build-up"), synthetic_template(), "4:5", headline=HOOK)
+    return build_timeline(
+        load_recipe("build-up"), synthetic_template(), "4:5", headline=HOOK
+    )
 
 
 def frame_at(ms: int, fps: int = 30) -> int:
@@ -116,7 +118,9 @@ def test_last_frame_lands_on_the_design(tl):
     s = evaluate(tl, tl.frame_count - 1)
     for layer in s.layers:
         assert layer.active and layer.opacity == 1, layer.key
-        assert (layer.x, layer.y, layer.scale, layer.rotation) == (0, 0, 1, 0), layer.key
+        assert (layer.x, layer.y, layer.scale, layer.rotation) == (0, 0, 1, 0), (
+            layer.key
+        )
     assert all(t.at_rest for t in s.texts)
     assert sorted((t.key, t.lines) for t in s.texts) == [
         ("headline", (0,)),
@@ -140,7 +144,9 @@ def test_layer_matrix_scales_about_the_anchor(tl):
 
 
 def test_details_first_opens_on_a_circle():
-    tl = build_timeline(load_recipe("details-first"), synthetic_template(), "4:5", headline=HOOK)
+    tl = build_timeline(
+        load_recipe("details-first"), synthetic_template(), "4:5", headline=HOOK
+    )
     s = evaluate(tl, 0)
     assert s.layer("detail0.mask").opacity == 1
     assert s.layer("hero").opacity == 0
@@ -149,7 +155,9 @@ def test_details_first_opens_on_a_circle():
 
 
 def test_six_second_cut_hits_its_scaled_beats():
-    tl = build_timeline(load_recipe("build-up", 6000), synthetic_template(), "4:5", headline=HOOK)
+    tl = build_timeline(
+        load_recipe("build-up", 6000), synthetic_template(), "4:5", headline=HOOK
+    )
     assert tl.frame_count == 180
     assert evaluate(tl, frame_at(900)).layer("hero").scale == 1
     m = evaluate(tl, frame_at(900)).layer("detail0.mask")
