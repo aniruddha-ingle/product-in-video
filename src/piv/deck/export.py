@@ -1,6 +1,6 @@
 """A run's ads as deck items of kind `video-ad`.
 
-    uv run python -m piv.deck.export RUN_ID [--draft]
+    uv run python -m piv.deck.export RUN_ID [--draft | --demo]
 
 Reads `runs/<run_id>/manifest.jsonl` and `runs/<run_id>/review.json` (the evaluator's verdict
 **per variant**, written by the lead from the video-evaluator's report; a PASS on one ratio

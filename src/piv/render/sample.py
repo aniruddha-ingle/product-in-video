@@ -36,6 +36,13 @@ def _sha(path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def _crop_key(c: dict) -> dict:
+    """The fields of a detail crop that decide its pixels (they enter the variant id)."""
+    return {k: c[k] for k in ("brand", "product", "image", "center", "zoom")} | {
+        "fit": c.get("fit", 1.15)
+    }
+
+
 def _ratios_sha() -> str:
     """The safe zones change frames too, so they are part of the id."""
     from importlib.resources import files
@@ -85,7 +92,9 @@ def render_one(*, brand, template_id, product, ratio, recipe_name, duration_ms, 
     used = sorted({l["png"] for l in template["layers"] if l.get("png")})  # noqa: E741
     spec = VariantSpec(
         brand=brand, template_id=template_id, recipe=recipe_name, ratio=ratio,
-        duration_s=duration_ms / 1000, fills={"product": product, "hook": hook_id}, seed=seed,
+        duration_s=duration_ms / 1000, fills={"product": product, "hook": hook_id,
+               **({"details": [_crop_key(c) for c in details]} if details else {})},
+        seed=seed,
         sources={"template_sha256": _sha(tjson), "recipe_sha256": recipe_sha256(recipe),
                  "layout_sha256": tl.layout["sha256"], "ratios_sha256": _ratios_sha(),
                  "images": {**{f"cutout:templates/{template_id}/{p}": _sha(tdir / p) for p in used},

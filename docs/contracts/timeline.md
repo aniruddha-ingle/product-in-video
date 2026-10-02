@@ -217,7 +217,7 @@ is 1950 ms (the sub-line), which is above the 1500 ms minimum.
 |---|---|---|---|
 | 4:5 | 1080×1350 | 4%, 4%, 4% (our own margin: Meta publishes no feed overlay) | whole canvas |
 | 1:1 | 1080×1080 | 4%, 4%, 4% (ours) | whole canvas |
-| 9:16 | 1080×1920 | 14%, 35%, 6% (Meta's Reels/Stories guide, as cited in copy-in-product-picture variant.md) | the same as text |
+| 9:16 | 1080×1920 | 14%, 14%, 6% (Meta's Stories zone, 2026-10-02: silent ads run in Feed and Stories, not Reels; was Reels' 14%, 35%, 6%) | the same as text |
 
 The build sorts layers into **groups** (`canvas`, `image`, `fade`, `text`). The layout file
 maps each group from the design's pixels to the canvas with `x' = k·x + dx`, `y' = k·y + dy`.

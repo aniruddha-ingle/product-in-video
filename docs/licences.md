@@ -41,3 +41,4 @@ forbids building numpy, Pillow or imageio-ffmpeg from source.
 |---|---|---|---|
 | Anton-Regular.ttf (the headline and sub-line face) | SIL OFL 1.1 | yes | read in place from `$CUTOUT_HOME/fonts`; sha256 `a4ba3a92350ebb031da0cb47630ac49eb265082ca1bc0450442f4a83ab947cab`, the same file and pin as copy-in-product-picture's `fonts/registry.yaml` (google/fonts 9710da1e, verified 2026-10-02) |
 | Steph's template layers (product photos, detail crops, gradients) | Haki's own creative | yes, Haki's | read in place from `$CUTOUT_HOME/templates/breaking-news-*`; never copied into git or a public page |
+| Haki catalogue photos (haki-studios.com product images via Shopify's CDN; e.g. godspeed-trackpants 5–7 for the detail circles) | Haki's own product photography | yes, Haki's | read in place from `$CUTOUT_HOME/catalogue/haki/images/` (copy-in-product-picture's catalogue); never copied into git or a public page |
