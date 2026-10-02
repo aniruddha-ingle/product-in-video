@@ -170,6 +170,6 @@
   touches: ["src/piv/review/**", "tests/test_review*"]
   agents: []
   checkpoint: false
-  state: review
+  state: merged
   branch: p1-review-verdicts
   gate: light
