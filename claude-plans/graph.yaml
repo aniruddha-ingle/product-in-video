@@ -59,7 +59,7 @@
   touches: ["docs/research/**"]
   agents: [video-vision-dev]
   checkpoint: false
-  state: building
+  state: review
   branch: null
   gate: light
   note: "after the swipe sample: there is no input video to decompose yet (the user: no sample, you go on your own)"
