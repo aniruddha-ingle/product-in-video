@@ -21,17 +21,13 @@ SLOT_PARTS = ("image", "mask", "ring")
 EXTENDS = ("down",)
 
 
-def _check_anim(
-    p: list, a: Animated, name: str, dur: int, lo=None, lo_open=False, hi=None
-):
+def _check_anim(p: list, a: Animated, name: str, dur: int, lo=None, lo_open=False, hi=None):
     prev = None
     for k in a.keys:
         if not 0 <= k.t_ms <= dur:
             p.append(f"{name}: keyframe at {k.t_ms} ms is outside 0..{dur} ms")
         if prev is not None and k.t_ms <= prev:
-            p.append(
-                f"{name}: keyframe times must increase strictly ({prev} then {k.t_ms} ms)"
-            )
+            p.append(f"{name}: keyframe times must increase strictly ({prev} then {k.t_ms} ms)")
         prev = k.t_ms
         if k.ease not in EASINGS:
             p.append(f"{name}: unknown easing {k.ease!r}")
@@ -86,17 +82,12 @@ def problems(doc: Timeline | Recipe) -> list[str]:
             p.append(f"{w}: unknown source kind {src.kind!r}")
         elif src.kind == "slot":
             if is_tl:
-                p.append(
-                    f"{w}: a timeline's sources are resolved; 'slot' is for recipes"
-                )
+                p.append(f"{w}: a timeline's sources are resolved; 'slot' is for recipes")
             slot = src.get("slot")
             if slot == "details" and (
-                not isinstance(src.get("index"), int)
-                or src.get("part") not in SLOT_PARTS
+                not isinstance(src.get("index"), int) or src.get("part") not in SLOT_PARTS
             ):
-                p.append(
-                    f"{w}: a details slot needs an integer index and a part in {SLOT_PARTS}"
-                )
+                p.append(f"{w}: a details slot needs an integer index and a part in {SLOT_PARTS}")
             elif slot not in ("hero", "details"):
                 p.append(f"{w}: unknown slot {slot!r} (hero, details)")
         elif src.kind == "template":
@@ -133,9 +124,7 @@ def problems(doc: Timeline | Recipe) -> list[str]:
         if v.extend is not None and v.extend not in EXTENDS:
             p.append(f"{w}: unknown extend {v.extend!r}")
         if is_tl and not _box_ok(v.box):
-            p.append(
-                f"{w}: a timeline layer needs a box [x0, y0, x1, y1] with x1 > x0, y1 > y0"
-            )
+            p.append(f"{w}: a timeline layer needs a box [x0, y0, x1, y1] with x1 > x0, y1 > y0")
     # parent cycles
     parents = {v.key: v.parent for v in doc.tracks.video}
     for k in parents:
@@ -174,18 +163,12 @@ def problems(doc: Timeline | Recipe) -> list[str]:
                 )
             if is_tl:
                 if not isinstance(r.lines, tuple):
-                    p.append(
-                        f"{rw}: a timeline's runs name line indices, not {r.lines!r}"
-                    )
+                    p.append(f"{rw}: a timeline's runs name line indices, not {r.lines!r}")
                 elif any(not 0 <= li < n for li in r.lines) or not r.lines:
-                    p.append(
-                        f"{rw}: lines {list(r.lines)} not within the content's {n} line(s)"
-                    )
+                    p.append(f"{rw}: lines {list(r.lines)} not within the content's {n} line(s)")
         if is_tl:
             if not isinstance(b.content, str) or not b.content.strip():
-                p.append(
-                    f"{w}: a timeline's text needs its content resolved to a string"
-                )
+                p.append(f"{w}: a timeline's text needs its content resolved to a string")
             if b.size is None or b.size <= 0:
                 p.append(f"{w}: size must be a positive number of px")
             if b.tracking is None:
@@ -200,7 +183,7 @@ def problems(doc: Timeline | Recipe) -> list[str]:
                 p.append(f"{w}: box must be [x0, y0, x1, y1] with x1 > x0, y1 > y0")
             if b.max_lines is not None and n > b.max_lines:
                 p.append(f"{w}: {n} lines, more than max_lines {b.max_lines}")
-    for i, beat in enumerate(doc.beats if isinstance(doc, Recipe) else ()):
+    for beat in doc.beats if isinstance(doc, Recipe) else ():
         if not 0 <= beat.start_ms < beat.end_ms <= dur:
             p.append(f"beat {beat.name!r}: needs 0 <= start_ms < end_ms <= {dur} ms")
 
@@ -222,9 +205,7 @@ def _timeline_problems(tl: Timeline) -> list[str]:
         p.append(f"fps must be positive, got {tl.fps}")
         return p
     if (tl.duration_ms * tl.fps) % 1000:
-        p.append(
-            f"duration {tl.duration_ms} ms is not a whole number of frames at {tl.fps} fps"
-        )
+        p.append(f"duration {tl.duration_ms} ms is not a whole number of frames at {tl.fps} fps")
     try:
         size = canvas_size(tl.canvas.ratio)
     except FormatError as e:

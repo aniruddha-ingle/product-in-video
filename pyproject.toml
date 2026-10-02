@@ -39,3 +39,7 @@ select = ["E", "F", "W", "I", "B", "UP"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+
+[tool.ruff.lint.per-file-ignores]
+# Contract tables kept one field per line, as in docs/contracts/timeline.md (`# fmt: skip`).
+"src/piv/timeline/*.py" = ["E501"]

@@ -44,15 +44,9 @@ def load_recipe(name: str, duration_ms: int | None = None) -> Recipe:
     validated."""
     path = RECIPES_DIR / f"{name}.json"
     if "/" in name or "." in name or not path.is_file():
-        raise FormatError(
-            f"unknown recipe {name!r}; known: {', '.join(recipe_names())}"
-        )
+        raise FormatError(f"unknown recipe {name!r}; known: {', '.join(recipe_names())}")
     base = _read(path)
-    r = (
-        base
-        if duration_ms in (None, base.duration_ms)
-        else scale_recipe(base, duration_ms)
-    )
+    r = base if duration_ms in (None, base.duration_ms) else scale_recipe(base, duration_ms)
     check(r)
     return r
 
@@ -113,9 +107,7 @@ def scale_recipe(recipe: Recipe, duration_ms: int) -> Recipe:
         recipe,
         duration_ms=duration_ms,
         scaled_from=src,
-        beats=tuple(
-            Beat(b.name, ms(b.start_ms), ms(b.end_ms), b.extra) for b in recipe.beats
-        ),
+        beats=tuple(Beat(b.name, ms(b.start_ms), ms(b.end_ms), b.extra) for b in recipe.beats),
         tracks=Tracks(
             video=tuple(video(v) for v in recipe.tracks.video),
             text=tuple(text(b) for b in recipe.tracks.text),

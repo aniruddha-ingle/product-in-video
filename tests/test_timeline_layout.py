@@ -33,9 +33,7 @@ def block(doc, key):
 
 def build(ratio="4:5", recipe="build-up", duration_ms=None, **kw):
     kw.setdefault("headline", HOOK)
-    return build_timeline(
-        load_recipe(recipe, duration_ms), synthetic_template(), ratio, **kw
-    )
+    return build_timeline(load_recipe(recipe, duration_ms), synthetic_template(), ratio, **kw)
 
 
 def test_safe_rects():
@@ -61,11 +59,7 @@ def test_native_ratio_is_the_identity():
 def test_designer_stacking_is_kept():
     keys = [v.key for v in build("4:5").tracks.video]
     assert keys[:2] == ["background", "hero"]
-    assert (
-        keys.index("detail2.mask")
-        < keys.index("detail1.mask")
-        < keys.index("detail0.mask")
-    )
+    assert keys.index("detail2.mask") < keys.index("detail1.mask") < keys.index("detail0.mask")
     assert keys[-3:] == ["fade0", "fade1", "fade2"]
 
 
@@ -74,10 +68,7 @@ def test_designer_stacking_is_kept():
 @pytest.mark.parametrize("duration_ms", [8000, 6000])
 def test_every_ratio_builds_with_text_inside_its_safe_zone(ratio, recipe, duration_ms):
     tl = build(ratio, recipe, duration_ms)
-    assert (
-        tl.canvas.size
-        == {"4:5": (1080, 1350), "1:1": (1080, 1080), "9:16": (1080, 1920)}[ratio]
-    )
+    assert tl.canvas.size == {"4:5": (1080, 1350), "1:1": (1080, 1080), "9:16": (1080, 1920)}[ratio]
     x0, y0, x1, y1 = safe_rect(ratio)
     for b in tl.tracks.text:
         assert x0 <= F(str(b.box[0])) and F(str(b.box[2])) <= x1
@@ -92,9 +83,7 @@ def test_916_keeps_the_bottom_block_above_the_stories_zone_and_the_image_below_t
     assert g["k"] <= 1
     t = synthetic_template()
     product_top = t["slots"]["hero"]["product_box"][1]
-    assert F(str(g["k"])) * product_top + F(str(g["dy"])) >= F(
-        "268.8"
-    )  # below the top 14%
+    assert F(str(g["k"])) * product_top + F(str(g["dy"])) >= F("268.8")  # below the top 14%
 
 
 def test_out_of_zone_text_box_is_caught():
@@ -142,9 +131,7 @@ def test_constraints_are_enforced():
     hidden = replace(hero, opacity=replace(hero.opacity, value=0))
     bad = replace(
         r,
-        tracks=replace(
-            r.tracks, video=(r.tracks.video[0], hidden) + r.tracks.video[2:]
-        ),
+        tracks=replace(r.tracks, video=(r.tracks.video[0], hidden) + r.tracks.video[2:]),
     )
     assert any("invisible at frame 0" in p for p in problems(bad))
 
