@@ -1,0 +1,59 @@
+# Haki's creative, footage and data never enter git (the same rule as product-in-picture).
+
+*.psd
+*.psb
+*.ai
+*.eps
+*.pdf
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.gif
+*.tif
+*.tiff
+*.heic
+*.mp4
+*.mov
+# Ad data exports and databases
+*.csv
+*.parquet
+*.sqlite
+*.sqlite3
+*.db
+*.dump
+data/
+exports/
+# Secrets (Meta tokens, database URLs)
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+# Python, tools, OS
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.DS_Store
+.worktrees/
+.claude/worktrees/
+# Video and audio
+*.mp4
+*.mov
+*.m4v
+*.mkv
+*.webm
+*.avi
+*.prproj
+*.aep
+*.drp
+*.fcpxml
+*.wav
+*.mp3
+*.aac
+*.m4a
+*.aif
+*.aiff
+*.flac
