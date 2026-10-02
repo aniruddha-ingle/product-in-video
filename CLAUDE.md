@@ -103,6 +103,14 @@ brand, not the product.
 - Nothing reaches a page or person outside the department (the COO, Devin) without the
   video-evaluator's PASS. The PASS alone is the gate (the user, 2026-10-02, in piv-lead-1's
   chat); the user's watch is no longer required.
+- **C-suite demo exception** (the user, 2026-10-02, in piv-lead-2's chat): "I allow sending
+  unevaluated clips to Haki swipe as demo items, and rendering outside heavy-test, for C-suite
+  demos". So for a demo to the CEO or COO: (1) clips without a video-evaluator PASS may go into
+  Haki swipe, but only as demo items, labelled unevaluated on the item (`reviewed.evaluator:
+  "NOT REVIEWED"`, `demo: true`, the deck export's `--draft`), never passed off as reviewed; and
+  (2) demo renders may skip the `heavy-test` lock, still `nice -n 15` with threads capped. The
+  rest stands: never change a product's shape, Haki's media stays out of git and public pages,
+  and everything outside demos keeps the PASS gate and the lock.
 - Share with product-in-picture by copying, never importing across repos; ask its leads
   (pip-lead, copy-lead) before duplicating their work (cut-outs, the catalogue, the copy bank).
 - Never modify `../studio`, `../mir-triage`, `../copy-in-product-picture` or

@@ -104,6 +104,10 @@ decide; Devin owns Haki. The machine proposes; people decide.
   phone-sized player; product edges at 2× on a loud background.
 - Merging: `scripts/lead/integrate.sh <node>` only; nothing else moves `main`.
 
+- **C-suite demos** (the user, 2026-10-02): unevaluated clips may go into Haki swipe as
+  demo items, labelled unevaluated, and demo renders may skip `heavy-test` (still niced,
+  threads capped). Everything else keeps the PASS gate and the lock (CLAUDE.md, Rules).
+
 ## 4. Record and lessons
 - Plans, the board, `docs/research/<topic>.md` (read, tried, numbers, verdict),
   `docs/contracts/`, decisions with dates (`claude-plans/00-organisation.md`).
