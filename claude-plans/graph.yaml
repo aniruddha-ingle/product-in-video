@@ -14,7 +14,7 @@
   touches: ["claude-plans/01-*", "CLAUDE.md"]
   agents: []
   checkpoint: true
-  state: todo
+  state: building
   branch: null
   gate: light
 
