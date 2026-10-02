@@ -54,6 +54,33 @@ def _invert(m):
     return (ia, ib, -(ia * c + ib * f), id_, ie, -(id_ * c + ie * f))
 
 
+def _catalogue_image(src) -> Image.Image:
+    """A catalogue photo (catalogue.md v1), optionally cropped to a square around `center`
+    (0..1, x then y) where `zoom` circle diameters span the shorter side and `fit` is the
+    placement box's size over the circle's (so a push-in below scale 1 still covers it)."""
+    brand, product, n = src.get("brand"), src.get("product"), src.get("image", 0)
+    cat_dir = paths.cutout_path("catalogue", brand)
+    cat = json.loads((cat_dir / "catalogue.json").read_text())
+    prod = next((p for p in cat["products"] if p["id"] == product), None)
+    if prod is None:
+        raise Refused(f"catalogue {brand!r} has no product {product!r}")
+    entry = next((i for i in prod["images"] if i["n"] == n), None)
+    if entry is None:
+        raise Refused(f"product {product!r} has no image {n}")
+    rel = entry.get("cutout") if src.get("use") == "cutout" else entry["path"]
+    im = Image.open(cat_dir / rel).convert("RGBA")
+    center, zoom = src.get("center"), src.get("zoom")
+    if center is not None and zoom:
+        side = min(im.size) / float(zoom) * float(src.get("fit", 1))
+        cx, cy = float(center[0]) * im.width, float(center[1]) * im.height
+        x0, y0 = cx - side / 2, cy - side / 2
+        if x0 < 0 or y0 < 0 or x0 + side > im.width or y0 + side > im.height:
+            raise Refused(f"{product} image {n}: the crop at {center} x{zoom} leaves the photo")
+        box = (round(x0), round(y0), round(x0 + side), round(y0 + side))
+        im = im.crop(box)
+    return im
+
+
 class Composer:
     def __init__(self, timeline: Timeline):
         self.tl = timeline
@@ -82,6 +109,8 @@ class Composer:
                 else self.tpl.role_layer_id(src.get("role"), src.get("index", 0))
             )
             im = Image.open(self.tdir / self.tpl.layer(lid)["png"]).convert("RGBA")
+        elif kind == "catalogue":
+            im = _catalogue_image(src)
         elif kind == "solid":
             bw = max(1, round(float(layer.box[2] - layer.box[0])))
             bh = max(1, round(float(layer.box[3] - layer.box[1])))
