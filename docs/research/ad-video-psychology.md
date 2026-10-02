@@ -813,3 +813,20 @@ changes below are off those axes, and none of them spends.
   (*Applied Cognitive Psychology*, recent): paywalled (402); not used.
 - Dobres et al. 2016: the polarity cost (≈20–25%) comes from an automated PDF summary, so it is
   approximate; the direction is the paper's.
+
+## Amendment 3: observations after the COO demo (2026-10-02, piv-lead-1), not data for P1–P9
+Appended; nothing above is changed. These are observations from a demo, not tests: no arm, no
+pairing, a viewer who knew the work. They inform the default recipe and template rules, not the
+pre-registered predictions.
+- **The COO and the user loved Jan-Ken** (ff1e5a2f6199 and its ratios, the default build-up
+  recipe). The user: "I think, he appreciates the psychology of it."
+- **Close detail crops land.** The user: "in the first sample black hunter pants the clasp was
+  zoomed in, white was kinda far ... you should fix it to be like the first sampple which was
+  fire." Measured: the photo width over the circle's diameter was 3.95 / 3.95 / 2.77 for
+  Jan-Ken and 2.32 / 4.53 / 1.53 for Godspeed. This matches §4 (close-ups as quality and craft
+  cues). Rule adopted: **each detail circle frames one close detail** (a logo, a print or a piece
+  of hardware) **that fills most of the circle**. Godspeed's circles were re-cropped from 1500 px
+  catalogue photos to match. A candidate axis for later: the detail fill ratio.
+- **The empty bottom band in 9:16 read as a fault.** The user: "wtf is the blackness at the
+  bottom". 9:16 now uses Meta's Stories safe zone (about 14% top and bottom), consistent with §6
+  (silent ads belong in Feed and Stories, and Reels default to sound on).
