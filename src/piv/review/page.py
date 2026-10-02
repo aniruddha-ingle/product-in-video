@@ -78,11 +78,43 @@ def _axes(spec: dict) -> dict:
     }
 
 
-def _clip_card(r: ManifestRow, sheet: str | None) -> str:
+def load_verdicts(path: Path, ads: list[Ad]) -> dict[str, dict]:
+    """Verdicts per variant_id from review.json.
+
+    The current shape is per variant, ``{"variants": {vid: {"evaluator": "PASS", ...}}}``, as the
+    deck export reads it. The older per-ad shape ``{"ads": {ad_key: {...}}}`` still works: an
+    ad's verdict applies to each of its variants.
+    """
+    if not path.exists():
+        return {}
+    doc = json.loads(path.read_text())
+    out = dict(doc.get("variants") or {})
+    for ad in ads:
+        for r in ad.rows:
+            if r.variant_id not in out and ad.ad_key in (doc.get("ads") or {}):
+                out[r.variant_id] = doc["ads"][ad.ad_key]
+    return out
+
+
+def ad_status(ad: Ad, verdicts: dict[str, dict]) -> str:
+    """PASS only when every ratio passed; FAIL if any failed; else partial or not reviewed."""
+    states = [verdicts.get(r.variant_id, {}).get("evaluator") for r in ad.rows]
+    if states and all(s == "PASS" for s in states):
+        return "PASS"
+    if any(s == "FAIL" for s in states):
+        return "FAIL"
+    if any(states):
+        return "partly reviewed"
+    return "not reviewed"
+
+
+def _clip_card(r: ManifestRow, sheet: str | None, verdict: dict) -> str:
     w, h = r.size or (0, 0)
     poster = f' poster="../{_e(r.poster)}"' if r.poster else ""
     fields = [
         ("variant", r.variant_id),
+        ("evaluator", verdict.get("evaluator", "not reviewed")),
+        ("note", verdict.get("note")),
         ("size", f"{w}×{h}" if w else None),
         ("frames", f"{r.frames} @ {r.fps} fps" if r.frames else None),
         ("cpu", f"{r.cpu_ms / 1000:.1f} s" if r.cpu_ms is not None else None),
@@ -106,13 +138,15 @@ def _clip_card(r: ManifestRow, sheet: str | None) -> str:
     )
 
 
-def _ad_section(ad: Ad, verdict: dict, sheets: dict[str, str]) -> str:
+def _ad_section(ad: Ad, verdicts: dict[str, dict], sheets: dict[str, str]) -> str:
     axes = "".join(
         f"<span><b>{_e(k)}</b> {_e(v)}</span>" for k, v in _axes(ad.spec).items() if v is not None
     )
-    status = verdict.get("evaluator", "not reviewed")
+    status = ad_status(ad, verdicts)
     cls = "pass" if status == "PASS" else "fail" if status == "FAIL" else "none"
-    clips = "".join(_clip_card(r, sheets.get(r.variant_id)) for r in ad.rows)
+    clips = "".join(
+        _clip_card(r, sheets.get(r.variant_id), verdicts.get(r.variant_id, {})) for r in ad.rows
+    )
     return (
         f'<section class="ad" id="ad-{_e(ad.ad_key)}">'
         f'<header><h2>ad {_e(ad.ad_key)}</h2><span class="status {cls}">{_e(status)}</span>'
@@ -192,7 +226,7 @@ def render_html(run_id: str, ads: list[Ad], problems: list[ManifestRow], review:
     ratio_buttons = "".join(
         f'<button data-ratio-filter="{_e(r)}" aria-pressed="false">{_e(r)}</button>' for r in ratios
     )
-    body = "".join(_ad_section(a, review.get(a.ad_key, {}), sheets) for a in ads)
+    body = "".join(_ad_section(a, review, sheets) for a in ads)
     return f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -222,8 +256,7 @@ def build_review(run_id: str, *, sheets: bool = True, threads: int = 2) -> Path:
     if not manifest.exists():
         raise NoManifest(f"no manifest at {manifest}")
     ads, problems = group_ads(read_manifest(manifest))
-    review_json = run / "review.json"
-    review = json.loads(review_json.read_text())["ads"] if review_json.exists() else {}
+    review = load_verdicts(run / "review.json", ads)
 
     out_dir = paths.ensure_dir(run / "review")
     sheet_paths: dict[str, str] = {}

@@ -121,3 +121,21 @@ def test_cli_and_missing_manifest(capsys):
     assert main(["no-such-run"]) == 2
     with pytest.raises(NoManifest):
         build_review("no-such-run")
+
+
+def test_per_variant_verdicts_as_the_deck_export_writes_them():
+    run = _run("rev-variants", {"eeeeeeeeeeee": ["4:5", "9:16"], "ffffffffffff": ["4:5"]})
+    v45, v916 = "eeeeee45".ljust(12, "0"), "eeeeee916".ljust(12, "0")
+    f45 = "ffffff45".ljust(12, "0")
+    verdicts = {v45: {"evaluator": "PASS", "note": "PASS @ abc"}, v916: {"evaluator": "PASS"},
+                f45: {"evaluator": "FAIL", "note": "edge halo at 2x"}}  # fmt: skip
+    (run / "review.json").write_text(json.dumps({"variants": verdicts}))
+    doc = build_review("rev-variants", sheets=False).read_text()
+    e = doc[doc.index("ad-eeeeeeeeeeee") : doc.index("ad-ffffffffffff")]
+    f = doc[doc.index("ad-ffffffffffff") :]
+    assert 'class="status pass">PASS<' in e and 'class="status fail">FAIL<' in f
+    assert "PASS @ abc" in e and "edge halo at 2x" in f
+    # one ratio unreviewed: the ad is not a PASS
+    (run / "review.json").write_text(json.dumps({"variants": {v45: {"evaluator": "PASS"}}}))
+    doc = build_review("rev-variants", sheets=False).read_text()
+    assert "partly reviewed" in doc[doc.index("ad-eeeeeeeeeeee") : doc.index("ad-ffffffffffff")]
