@@ -122,7 +122,7 @@
   touches: ["claude-plans/*-audio-notes*"]
   agents: []
   checkpoint: false
-  state: review
+  state: merged
   branch: p2-audio-notes
   gate: light
   note: "piv-lead-1 handed to piv-lead-2; the notes become p2-audio-plan's plan"
