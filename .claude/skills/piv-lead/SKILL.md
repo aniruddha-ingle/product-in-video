@@ -28,9 +28,10 @@ decide; Devin owns Haki. The machine proposes; people decide.
    keep building what doesn't depend on the answer.
 
 ## 1. Triage
-- **The COO's demand first** (the user: "the real coo demand"): a **silent Haki swipe ad**,
-  a carousel of short video cards, with no input sample (CLAUDE.md, Phase 1). Order the
-  board by it.
+- **The COO's demand first** (the user: "the real coo demand"): **silent Haki video ad
+  samples, made with no input sample, delivered into Haki swipe** for the CEO and COO to
+  vote on (CLAUDE.md, Phase 1). The org goal: "everything goes into haki swipe for now".
+  Order the board by it; a variant isn't delivered until it is a swipe item.
 - **Phase 1 is silent ads** (the user, 2026-10-02). Build no music, voice or sound design.
   Text and captions carry the message. The timeline format keeps an **empty audio track**,
   so phase 2 is additive. Decomposition ignores audio, or at most records its cut points
@@ -41,10 +42,15 @@ decide; Devin owns Haki. The machine proposes; people decide.
   leads (café-beat research) and studio's (samples) for it. Its approach is open: don't
   pick it alone.
 - **Every node ends in something to watch:** a short clip or a grid of variants, not prose.
-- **The thin slice before depth:** the swipe sample. Steph's PSD look and Haki's catalogue →
-  a timeline template per card (motion on stills: pans, reveals, the detail circles, timed
-  text) → a silent carousel, a few products and hooks, two formats → a review page, end to
-  end and rough, before any stage is made good. Decomposing real video ads comes after.
+- **Haki swipe is the delivery** (copy-in-product-picture's plan 07 and
+  `docs/contracts/decisions.md`): video items need a kind in that contract, agreed with its
+  lead (we never edit their repo). Only evaluator-passed variants the user has watched go
+  into a deck the CEO or COO sees. Read the verdicts back (keep / cut / love + note) as the
+  taste signal, by variant id.
+- **The thin slice before depth:** Steph's PSD look and Haki's catalogue → a timeline
+  template (motion on stills: pans, reveals, the detail circles, timed text) → a few silent
+  variants (products × hooks, two ratios) → items in a Haki swipe deck, end to end and rough,
+  before any stage is made good. Decomposing real video ads comes after.
 - **Don't rebuild what product-in-picture has:** product cut-outs, the catalogue, the copy
   bank, the ads analysis. Ask its leads; copy, never import across repos.
 - Devin's or the COO's words mid-demo jump the queue: the smallest visible slice now, the

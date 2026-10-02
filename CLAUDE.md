@@ -18,18 +18,25 @@ also. but we dont know how yet."
 - **Phase 2 starts as a plan, not code:** options and a recommendation for music, voice,
   sound design, beat-synced cuts and audio variation, decided by the user. mir-triage and
   studio are the org's audio departments: talk to their leads for that plan.
-- **The COO's demand, the first deliverable: a Haki swipe ad** (the user, 2026-10-02, via
-  studio's lead-9, confirmed here): "big deliverable for haki swipe and the haki ad sample is
-  a product in video sample"; asked for a sample: "no sample, you go on your own." So: a
-  **carousel of short silent video cards** (9:16 or 4:5), card 1 the hook ("swipe to see
-  why >"), built with **no input video** from what Haki already has, all read in place:
-  Steph's three PSDs and their JPEGs (`~/Downloads/Breaking News Slide 1.psd`, `… V1 -
-  Godspeed.psd`, `… V1 - Janken.psd`, `~/Downloads/WhatsApp Image 2026-10-02 at
-  00.58.50*.jpeg`: 1080×1350, hero product, three circular detail crops, dark bottom
-  gradient, bold condensed headline, green or purple sub-line); Haki's catalogue and the
-  copy bank from copy-in-product-picture (ask its copy lead, session
+- **The COO's demand, the first deliverable: Haki video ad samples in Haki swipe** (the
+  user, 2026-10-02, via studio's lead-9, confirmed here): "big deliverable for haki swipe and
+  the haki ad sample is a product in video sample"; asked for a sample: "no sample, you go on
+  your own." So: **silent Haki video ads, made with no input video**, delivered as items in
+  **Haki swipe**, the org's voting app where the CEO and COO keep / cut / love each item with
+  an optional note (copy-in-product-picture's plan 07; its contract is
+  `../copy-in-product-picture/docs/contracts/decisions.md`; the first page is pip-lead-2's).
+  Our items need a video kind in that contract: ask its lead, never edit their repo. Sources,
+  all read in place: Steph's three PSDs and their JPEGs (`~/Downloads/Breaking News Slide
+  1.psd`, `… V1 - Godspeed.psd`, `… V1 - Janken.psd`, `~/Downloads/WhatsApp Image
+  2026-10-02 at 00.58.50*.jpeg`: 1080×1350, hero product, three circular detail crops, dark
+  bottom gradient, bold condensed headline, green or purple sub-line); Haki's catalogue and
+  the copy bank from copy-in-product-picture (ask its copy lead, session
   copy-in-product-picture-55, before scraping). Not ours: the "Will of D" hat decks in
   Downloads (design-manufacture-interface's). Plan: `claude-plans/01-*.md`.
+- **The org goal** (the user, broadcast 2026-10-02): "everything goes into haki swipe for
+  now. the over arching org goal is to build a swipe app for the ceo and coo to vote on ideas
+  created by all departments combined." Every variant we make is shaped to be a swipe item
+  (stable ids, real ratios, the axes it varies), and verdicts come back as taste signal.
 
 ## Who I am and what Claude is for
 Software engineer (C++ by day), producer; not an editor or an ad buyer. Claude researches,

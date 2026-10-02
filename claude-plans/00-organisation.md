@@ -43,7 +43,12 @@ feature plan for audio also. but we dont know how yet."
   pip-lead and copy-lead before duplicating work.
 - Autonomy: the lead pushes `main` freely (like copy-in-product-picture); the pre-push hook
   guards media, secrets and big blobs.
-- The COO's demand: a silent Haki swipe ad, no input sample (the user's words via studio's
-  lead-9, confirmed in this session); the form is a carousel of short video cards. Recorded in
-  CLAUDE.md; the board's thin slice became `p1-swipe-sample`, and the decompose survey moved
-  down (there is no input video to decompose yet).
+- The COO's demand: silent Haki video ad samples, no input sample, delivered into Haki swipe
+  (the org's voting app) for the CEO and COO to vote on (the user's words via studio's lead-9,
+  confirmed in this session). A first reading as a carousel "swipe ad" (01c5326) was
+  corrected by the user the same night. The board: `p1-swipe-video-item` (our item kind in
+  copy-in-product-picture's decisions contract) and `p1-swipe-sample`; the decompose survey
+  waits (there is no input video to decompose yet).
+- The org goal (the user, broadcast by design-manufacture-interface-d4): "everything goes into
+  haki swipe for now. the over arching org goal is to build a swipe app for the ceo and coo to
+  vote on ideas created by all departments combined."

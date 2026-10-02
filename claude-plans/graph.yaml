@@ -1,12 +1,12 @@
 # The board for product-in-video. Phase 1 (2026-10-02): silent video ads; audio is a phase 2
-# plan. The COO's demand: a silent Haki swipe ad. Seeded at setup; the first plan (p1-plan)
+# plan. The COO's demand: silent Haki video ads in Haki swipe. Seeded at setup; the first plan (p1-plan)
 # confirms, reorders or drops these nodes.
 # Strict YAML subset (scripts/lead/README.md). Lower priority starts first.
 
 - id: p1-plan
   plan: 1
   spec: []
-  title: "Phase 1 plan: the COO's demand word for word, the swipe sample's cards and sources, evaluation clips, CPU minutes per clip"
+  title: "Phase 1 plan: the COO's demand word for word, the samples for Haki swipe and their sources, evaluation clips, CPU minutes per clip"
   visible: true
   priority: 0
   user_override: null
@@ -64,14 +64,30 @@
   gate: light
   note: "after the swipe sample: there is no input video to decompose yet (the user: no sample, you go on your own)"
 
+- id: p1-swipe-video-item
+  plan: 0
+  spec: []
+  title: "A video item kind in Haki swipe's decisions contract, agreed with copy-in-product-picture's lead; our deck export to it"
+  visible: false
+  priority: 1
+  user_override: null
+  depends_on: [p1-plan]
+  touches: ["docs/contracts/swipe-*", "src/piv/deck/**", "tests/test_deck*"]
+  agents: [edit-dev]
+  checkpoint: false
+  state: todo
+  branch: null
+  gate: light
+  note: "the contract is ../copy-in-product-picture/docs/contracts/decisions.md: ask its lead, never edit it"
+
 - id: p1-swipe-sample
   plan: 0
   spec: []
-  title: "The COO's demand: a silent Haki swipe ad, a carousel of video cards in Steph's PSD look from the catalogue and copy bank, no input sample"
+  title: "The COO's demand: silent Haki video ad samples in Steph's PSD look, from the catalogue and copy bank, no input sample, as Haki swipe items"
   visible: true
   priority: 1
   user_override: null
-  depends_on: [p1-timeline-format, p1-package-ffmpeg]
+  depends_on: [p1-timeline-format, p1-package-ffmpeg, p1-swipe-video-item]
   touches: ["src/piv/**", "tests/**"]
   agents: [edit-dev, video-evaluator]
   checkpoint: true
