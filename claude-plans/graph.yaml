@@ -29,7 +29,7 @@
   touches: ["docs/contracts/**", "src/piv/timeline/**", "tests/test_timeline*"]
   agents: [edit-dev]
   checkpoint: true
-  state: review
+  state: merged
   branch: null
   gate: full
 
