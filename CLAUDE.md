@@ -106,8 +106,9 @@ brand, not the product.
 - **C-suite demo exception** (the user, 2026-10-02, in piv-lead-2's chat): "I allow sending
   unevaluated clips to Haki swipe as demo items, and rendering outside heavy-test, for C-suite
   demos". So for a demo to the CEO or COO: (1) clips without a video-evaluator PASS may go into
-  Haki swipe, but only as demo items, labelled unevaluated on the item (`reviewed.evaluator:
-  "NOT REVIEWED"`, `demo: true`, the deck export's `--draft`), never passed off as reviewed; and
+  Haki swipe, but only as demo items, labelled exactly as decisions.md amendment 6 says (`demo: true`,
+  `reviewed: {"evaluator": "demo · not evaluated"}`), never passed off as reviewed, and never
+  exported to a run, a paid test or the showcase until a later review passes it; and
   (2) demo renders may skip the `heavy-test` lock, still `nice -n 15` with threads capped. The
   rest stands: never change a product's shape, Haki's media stays out of git and public pages,
   and everything outside demos keeps the PASS gate and the lock.
