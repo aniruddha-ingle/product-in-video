@@ -156,12 +156,8 @@ class Animated:
         if isinstance(x, list):
             if not x:
                 raise FormatError(f"{where}: an empty keyframe list")
-            return cls(
-                keys=tuple(Key.from_json(k, f"{where}[{i}]") for i, k in enumerate(x))
-            )
-        raise FormatError(
-            f"{where}: expected a number or a list of keyframes, got {x!r}"
-        )
+            return cls(keys=tuple(Key.from_json(k, f"{where}[{i}]") for i, k in enumerate(x)))
+        raise FormatError(f"{where}: expected a number or a list of keyframes, got {x!r}")
 
     def to_json(self) -> Number | list:
         if self.keys:
@@ -406,9 +402,7 @@ class TextRun:
         if isinstance(lines, list):
             lines = tuple(_int(i, f"{where}.lines") for i in lines)
         elif lines not in LINE_SELECTORS:
-            raise FormatError(
-                f"{where}.lines: expected {LINE_SELECTORS} or a list, got {lines!r}"
-            )
+            raise FormatError(f"{where}.lines: expected {LINE_SELECTORS} or a list, got {lines!r}")
         return cls(
             lines=lines,
             start_ms=_int(_req(d, "start_ms", where), f"{where}.start_ms"),
@@ -475,12 +469,8 @@ class TextBlock:
     font: FontRef | None = None
     size: Number | None = None  # px on the canvas
     tracking: Number | None = None  # 1/1000 em
-    leading: Number | None = (
-        None  # x the face's line pitch; None = the template's auto leading
-    )
-    color: str | dict | None = (
-        None  # timeline: "#RRGGBB"; recipe: {"fill": "accent"} or None
-    )
+    leading: Number | None = None  # x the face's line pitch; None = the template's auto leading
+    color: str | dict | None = None  # timeline: "#RRGGBB"; recipe: {"fill": "accent"} or None
     align: str | None = None  # "left" | "center" | "right"
     box: Box | None = None  # canvas px the lines must fit in
     anchor: tuple[Number, Number] | None = None  # the template's text anchor, canvas px
@@ -498,14 +488,10 @@ class TextBlock:
         where = f"{where}({key})"
         content = d.get("content")
         if content is not None and not isinstance(content, (str, dict)):
-            raise FormatError(
-                f"{where}.content: expected text or an object, got {content!r}"
-            )
+            raise FormatError(f"{where}.content: expected text or an object, got {content!r}")
         color = d.get("color")
         if color is not None and not isinstance(color, (str, dict)):
-            raise FormatError(
-                f"{where}.color: expected '#RRGGBB' or an object, got {color!r}"
-            )
+            raise FormatError(f"{where}.color: expected '#RRGGBB' or an object, got {color!r}")
         safe = d.get("safe", True)
         if not isinstance(safe, bool):
             raise FormatError(f"{where}.safe: expected true or false")
@@ -514,9 +500,7 @@ class TextBlock:
             raise FormatError(f"{where}.runs: expected a list")
         return cls(
             key=key,
-            runs=tuple(
-                TextRun.from_json(r, f"{where}.runs[{i}]") for i, r in enumerate(runs)
-            ),
+            runs=tuple(TextRun.from_json(r, f"{where}.runs[{i}]") for i, r in enumerate(runs)),
             slot=_str(d.get("slot"), f"{where}.slot", optional=True),
             group=_str(d.get("group"), f"{where}.group", optional=True),
             content=content,
@@ -577,19 +561,15 @@ class Tracks:
         d = _obj(d, where)
         for name in ("video", "text", "audio"):
             if name not in d:
-                raise FormatError(
-                    f"{where}: missing track {name!r} (audio is [] in phase 1)"
-                )
+                raise FormatError(f"{where}: missing track {name!r} (audio is [] in phase 1)")
             if not isinstance(d[name], list):
                 raise FormatError(f"{where}.{name}: expected a list")
         return cls(
             video=tuple(
-                VideoLayer.from_json(x, f"{where}.video[{i}]")
-                for i, x in enumerate(d["video"])
+                VideoLayer.from_json(x, f"{where}.video[{i}]") for i, x in enumerate(d["video"])
             ),
             text=tuple(
-                TextBlock.from_json(x, f"{where}.text[{i}]")
-                for i, x in enumerate(d["text"])
+                TextBlock.from_json(x, f"{where}.text[{i}]") for i, x in enumerate(d["text"])
             ),
             audio=tuple(d["audio"]),
             extra=_split(d, {"video", "text", "audio"}),
@@ -622,12 +602,8 @@ class Constraints:
         if not isinstance(on0, list):
             raise FormatError(f"{where}.on_screen_at_0: expected a list of layer keys")
         return cls(
-            min_text_hold_ms=_int(
-                d.get("min_text_hold_ms", 1500), f"{where}.min_text_hold_ms"
-            ),
-            hook_by_ms=_int(
-                d.get("hook_by_ms", 1000), f"{where}.hook_by_ms", optional=True
-            ),
+            min_text_hold_ms=_int(d.get("min_text_hold_ms", 1500), f"{where}.min_text_hold_ms"),
+            hook_by_ms=_int(d.get("hook_by_ms", 1000), f"{where}.hook_by_ms", optional=True),
             on_screen_at_0=tuple(_str(k, f"{where}.on_screen_at_0") for k in on0),
             extra=_split(d, {"min_text_hold_ms", "hook_by_ms", "on_screen_at_0"}),
         )
@@ -702,9 +678,7 @@ class Recipe:
             id=rid,
             duration_ms=_int(_req(d, "duration_ms", w), f"{w}.duration_ms"),
             tracks=Tracks.from_json(_req(d, "tracks", w), f"{w}.tracks"),
-            beats=tuple(
-                Beat.from_json(b, f"{w}.beats[{i}]") for i, b in enumerate(beats)
-            ),
+            beats=tuple(Beat.from_json(b, f"{w}.beats[{i}]") for i, b in enumerate(beats)),
             constraints=Constraints.from_json(d.get("constraints"), f"{w}.constraints"),
             description=_str(d.get("description"), f"{w}.description", optional=True),
             scaled_from=d.get("scaled_from"),
@@ -768,9 +742,7 @@ class Timeline:
     id: str | None = None  # the variant_id when built for a variant
     template: dict | None = None  # {"id", "sha256", "home": "cutout"}
     recipe: dict | None = None  # {"id", "sha256"}
-    layout: dict | None = (
-        None  # {"id", "sha256", "groups": {name: {"scale", "dx", "dy"}}}
-    )
+    layout: dict | None = None  # {"id", "sha256", "groups": {name: {"scale", "dx", "dy"}}}
     format_version: int = FORMAT_VERSION
     extra: dict = field(default_factory=dict)
 
@@ -836,15 +808,11 @@ def from_dict(d: Any, kind: str | None = None) -> Timeline | Recipe:
     d = _obj(d, "document")
     k = kind or d.get("kind")
     if k not in _KINDS:
-        raise FormatError(
-            f"unknown document kind {k!r}; expected one of {sorted(_KINDS)}"
-        )
+        raise FormatError(f"unknown document kind {k!r}; expected one of {sorted(_KINDS)}")
     return _KINDS[k].from_json(d)
 
 
-def loads(
-    text: str, kind: str | None = None, validate: bool = True
-) -> Timeline | Recipe:
+def loads(text: str, kind: str | None = None, validate: bool = True) -> Timeline | Recipe:
     """Parse, check `format_version`, and (by default) validate. Unknown optional fields are
     kept in `extra`, not refused."""
     try:
@@ -859,18 +827,14 @@ def loads(
     return doc
 
 
-def load(
-    path: str | Path, kind: str | None = None, validate: bool = True
-) -> Timeline | Recipe:
+def load(path: str | Path, kind: str | None = None, validate: bool = True) -> Timeline | Recipe:
     return loads(Path(path).read_text(encoding="utf-8"), kind, validate)
 
 
 def dumps(doc: Timeline | Recipe) -> str:
     """Readable JSON (2-space indent, keys in the contract's order, a final newline). Ids and
     shas never hash this text; they hash `canonical_json(doc.to_json())`."""
-    return (
-        json.dumps(doc.to_json(), indent=2, ensure_ascii=False, allow_nan=False) + "\n"
-    )
+    return json.dumps(doc.to_json(), indent=2, ensure_ascii=False, allow_nan=False) + "\n"
 
 
 def dump(doc: Timeline | Recipe, path: str | Path) -> None:

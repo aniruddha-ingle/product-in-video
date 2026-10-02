@@ -76,9 +76,7 @@ class FrameState:
     frame: int
     t_ms: F
     layers: tuple[LayerState, ...]  # drawing order, bottom to top
-    texts: tuple[
-        TextState, ...
-    ]  # drawn above every video layer, in block then run order
+    texts: tuple[TextState, ...]  # drawn above every video layer, in block then run order
 
     def layer(self, key: str) -> LayerState:
         for s in self.layers:
@@ -246,9 +244,7 @@ def _cos_sin(deg: F) -> tuple[F, F]:
     if r.denominator == 1 and int(r) in exact:
         c, s = exact[int(r)]
         return F(c), F(s)
-    rad = math.radians(
-        float(deg)
-    )  # deterministic on one machine; v0 recipes never rotate
+    rad = math.radians(float(deg))  # deterministic on one machine; v0 recipes never rotate
     return F(math.cos(rad)), F(math.sin(rad))
 
 
