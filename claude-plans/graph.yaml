@@ -91,7 +91,7 @@
   touches: ["src/piv/**", "tests/**"]
   agents: [edit-dev, video-evaluator]
   checkpoint: true
-  state: todo
+  state: review
   branch: null
   gate: full
 
