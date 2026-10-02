@@ -138,7 +138,7 @@
   touches: ["src/piv/review/**", "tests/test_review*"]
   agents: []
   checkpoint: false
-  state: built
+  state: review
   branch: p1-review-grid
   gate: light
   note: "piv-lead-1 handed to piv-lead-2; never published: Haki's pixels stay local"
