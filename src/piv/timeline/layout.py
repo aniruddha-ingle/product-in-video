@@ -32,9 +32,7 @@ def ratio_spec(ratio: str) -> dict:
     try:
         return ratios()[ratio]
     except KeyError:
-        raise FormatError(
-            f"unknown ratio {ratio!r}; known: {', '.join(ratios())}"
-        ) from None
+        raise FormatError(f"unknown ratio {ratio!r}; known: {', '.join(ratios())}") from None
 
 
 def canvas_size(ratio: str) -> tuple[int, int]:
@@ -154,9 +152,7 @@ def resolve_layout(
         elif kind == "follow":
             of = rule["of"]
             if of not in out:
-                raise Refused(
-                    f"layout: group {g!r} follows {of!r}, which is not placed"
-                )
+                raise Refused(f"layout: group {g!r} follows {of!r}, which is not placed")
             m = out[of]
             out[g] = GroupMap(m.k, m.dx, m.dy)
         elif kind == "above":
@@ -164,9 +160,7 @@ def resolve_layout(
             if ext is None:
                 continue
             if of not in out or extents.get(of) is None:
-                raise Refused(
-                    f"layout: group {g!r} sits above {of!r}, which is not placed"
-                )
+                raise Refused(f"layout: group {g!r} sits above {of!r}, which is not placed")
             x0, y0, x1, y1 = (frac(v) for v in ext)
             of_ext = extents[of]
             gap = max(F(0), frac(of_ext[1]) - y1)
@@ -190,9 +184,7 @@ def resolve_layout(
             # the scaled group must sit inside content_safe horizontally
             gx0, _, gx1, _ = out[g].box(ext)
             if gx0 < cx0 or gx1 > cx1:
-                raise Refused(
-                    f"{ratio}: the {g} group leaves the content-safe zone sideways"
-                )
+                raise Refused(f"{ratio}: the {g} group leaves the content-safe zone sideways")
         else:
             raise FormatError(f"layout: unknown rule {kind!r} for group {g!r}")
     return out

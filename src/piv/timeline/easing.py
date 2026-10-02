@@ -83,9 +83,7 @@ def ease(name: str, u: F) -> F:
     try:
         fn = EASINGS[name]
     except KeyError:
-        raise FormatError(
-            f"unknown easing {name!r}; known: {', '.join(sorted(EASINGS))}"
-        ) from None
+        raise FormatError(f"unknown easing {name!r}; known: {', '.join(sorted(EASINGS))}") from None
     if u <= 0:
         return F(0)
     if u >= 1:

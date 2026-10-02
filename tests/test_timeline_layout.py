@@ -33,13 +33,11 @@ def block(doc, key):
 
 def build(ratio="4:5", recipe="build-up", duration_ms=None, **kw):
     kw.setdefault("headline", HOOK)
-    return build_timeline(
-        load_recipe(recipe, duration_ms), synthetic_template(), ratio, **kw
-    )
+    return build_timeline(load_recipe(recipe, duration_ms), synthetic_template(), ratio, **kw)
 
 
 def test_safe_rects():
-    assert safe_rect("9:16") == (F("64.8"), F("268.8"), F("1015.2"), 1248)
+    assert safe_rect("9:16") == (F("64.8"), F("268.8"), F("1015.2"), F("1651.2"))  # Stories zone
     assert content_safe_rect("4:5") == (0, 0, 1080, 1350)
     assert safe_rect("4:5") == (F("43.2"), 54, F("1036.8"), 1296)
 
@@ -61,11 +59,7 @@ def test_native_ratio_is_the_identity():
 def test_designer_stacking_is_kept():
     keys = [v.key for v in build("4:5").tracks.video]
     assert keys[:2] == ["background", "hero"]
-    assert (
-        keys.index("detail2.mask")
-        < keys.index("detail1.mask")
-        < keys.index("detail0.mask")
-    )
+    assert keys.index("detail2.mask") < keys.index("detail1.mask") < keys.index("detail0.mask")
     assert keys[-3:] == ["fade0", "fade1", "fade2"]
 
 
@@ -74,33 +68,28 @@ def test_designer_stacking_is_kept():
 @pytest.mark.parametrize("duration_ms", [8000, 6000])
 def test_every_ratio_builds_with_text_inside_its_safe_zone(ratio, recipe, duration_ms):
     tl = build(ratio, recipe, duration_ms)
-    assert (
-        tl.canvas.size
-        == {"4:5": (1080, 1350), "1:1": (1080, 1080), "9:16": (1080, 1920)}[ratio]
-    )
+    assert tl.canvas.size == {"4:5": (1080, 1350), "1:1": (1080, 1080), "9:16": (1080, 1920)}[ratio]
     x0, y0, x1, y1 = safe_rect(ratio)
     for b in tl.tracks.text:
         assert x0 <= F(str(b.box[0])) and F(str(b.box[2])) <= x1
         assert y0 <= F(str(b.box[1])) and F(str(b.box[3])) <= y1
 
 
-def test_916_moves_the_bottom_block_above_the_caption_zone_and_the_image_below_the_top():
+def test_916_keeps_the_bottom_block_above_the_stories_zone_and_the_image_below_the_top():
     tl = build("9:16")
     sub = block(tl, "subline")
-    assert sub.box[3] == 1248 - 24  # the safe line, less the padding
+    assert F(str(sub.box[3])) <= F("1651.2") - 24  # the safe line, less the padding
     g = tl.layout["groups"]["image"]
-    assert g["k"] < 1
+    assert g["k"] <= 1
     t = synthetic_template()
     product_top = t["slots"]["hero"]["product_box"][1]
-    assert F(str(g["k"])) * product_top + F(str(g["dy"])) >= F(
-        "268.8"
-    )  # below the top 14%
+    assert F(str(g["k"])) * product_top + F(str(g["dy"])) >= F("268.8")  # below the top 14%
 
 
 def test_out_of_zone_text_box_is_caught():
     d = json.loads(dumps(build("9:16")))
     sub = next(b for b in d["tracks"]["text"] if b["key"] == "subline")
-    sub["box"] = [64.8, 1400, 1015.2, 1430]  # inside the bottom 35% caption zone
+    sub["box"] = [64.8, 1700, 1015.2, 1730]  # inside the bottom 14% zone
     with pytest.raises(ValidationError, match="leaves the 9:16 safe zone"):
         loads(json.dumps(d))
     sub["box"] = [20, 1198, 1015.2, 1224]  # into the 6% side margin
@@ -142,9 +131,7 @@ def test_constraints_are_enforced():
     hidden = replace(hero, opacity=replace(hero.opacity, value=0))
     bad = replace(
         r,
-        tracks=replace(
-            r.tracks, video=(r.tracks.video[0], hidden) + r.tracks.video[2:]
-        ),
+        tracks=replace(r.tracks, video=(r.tracks.video[0], hidden) + r.tracks.video[2:]),
     )
     assert any("invisible at frame 0" in p for p in problems(bad))
 
@@ -166,11 +153,11 @@ def test_scaling_rounds_half_to_even():
 def test_layout_refuses_a_group_that_would_shrink_too_far():
     layout = load_layout("stack")
     extents = {
-        "text": (0, 600, 1080, 1300),
-        "image": (0, 0, 1080, 560),
-    }  # a tall text block
+        "text": (0, 1400, 1080, 2300),
+        "image": (0, 0, 1080, 1400),
+    }  # a tall design with a tall text block: the image would drop below min_scale
     with pytest.raises(Refused, match="shrink"):
-        resolve_layout(layout, "9:16", (1080, 1350), extents)
+        resolve_layout(layout, "9:16", (1080, 2400), extents)
 
 
 def test_build_refusals():

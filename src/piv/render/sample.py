@@ -36,8 +36,48 @@ def _sha(path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def _crop_key(c: dict) -> dict:
+    """The fields of a detail crop that decide its pixels (they enter the variant id)."""
+    return {k: c[k] for k in ("brand", "product", "image", "center", "zoom")} | {
+        "fit": c.get("fit", 1.15)
+    }
+
+
+def _ratios_sha() -> str:
+    """The safe zones change frames too, so they are part of the id."""
+    from importlib.resources import files
+
+    return hashlib.sha256(files("piv.timeline").joinpath("ratios.json").read_bytes()).hexdigest()
+
+
+def _catalogue_shas(crops) -> dict:
+    out = {}
+    for c in crops:
+        cat_dir = paths.cutout_path("catalogue", c["brand"])
+        cat = json.loads((cat_dir / "catalogue.json").read_text())
+        prod = next(p for p in cat["products"] if p["id"] == c["product"])
+        rel = next(i for i in prod["images"] if i["n"] == c["image"])["path"]
+        out[f"cutout:catalogue/{c['brand']}/{rel}"] = _sha(cat_dir / rel)
+    return out
+
+
+def detail_swaps(template: dict, crops: list[dict]):
+    """Swaps and placements for the detail circles from brand data: one entry per circle,
+    left to right, {"product", "image", "center": [x, y], "zoom", "fit"} (catalogue.md's
+    center/zoom). The placement is the circle's box times `fit`, so the crop covers it."""
+    swaps, placements = {}, {}
+    for i, c in enumerate(crops):
+        cx, cy, r = template["slots"]["details"][i]["circle"]
+        fit = c.get("fit", 1.15)
+        swaps[f"details.{i}"] = {"kind": "catalogue", "brand": c["brand"], "product": c["product"],
+                                 "image": c["image"], "use": "original", "center": c["center"],
+                                 "zoom": c["zoom"], "fit": fit}  # fmt: skip
+        placements[f"details.{i}"] = [cx - r * fit, cy - r * fit, cx + r * fit, cy + r * fit]
+    return swaps, placements
+
+
 def render_one(*, brand, template_id, product, ratio, recipe_name, duration_ms, run_id,
-               headline=None, hook_id="template", seed=0) -> ManifestRow:  # fmt: skip
+               headline=None, hook_id="template", seed=0, details=None) -> ManifestRow:  # fmt: skip
     tdir = paths.cutout_path("templates", template_id)
     tjson = tdir / "template.json"
     template = json.loads(tjson.read_text())
@@ -45,14 +85,20 @@ def render_one(*, brand, template_id, product, ratio, recipe_name, duration_ms, 
     texts = {l["id"]: l.get("text", {}).get("content") for l in template["layers"]}  # noqa: E741
     headline = headline or texts[slots["headline"]]
     recipe = load_recipe(recipe_name, duration_ms)
-    tl = build_timeline(recipe, template, ratio, headline=headline)
+    swaps, placements = detail_swaps(template, details) if details else ({}, {})
+    tl = build_timeline(
+        recipe, template, ratio, headline=headline, swaps=swaps, placements=placements
+    )
     used = sorted({l["png"] for l in template["layers"] if l.get("png")})  # noqa: E741
     spec = VariantSpec(
         brand=brand, template_id=template_id, recipe=recipe_name, ratio=ratio,
-        duration_s=duration_ms / 1000, fills={"product": product, "hook": hook_id}, seed=seed,
+        duration_s=duration_ms / 1000, fills={"product": product, "hook": hook_id,
+               **({"details": [_crop_key(c) for c in details]} if details else {})},
+        seed=seed,
         sources={"template_sha256": _sha(tjson), "recipe_sha256": recipe_sha256(recipe),
-                 "layout_sha256": tl.layout["sha256"],
-                 "images": {f"cutout:templates/{template_id}/{p}": _sha(tdir / p) for p in used}},
+                 "layout_sha256": tl.layout["sha256"], "ratios_sha256": _ratios_sha(),
+                 "images": {**{f"cutout:templates/{template_id}/{p}": _sha(tdir / p) for p in used},
+                            **_catalogue_shas(details or [])}},
         render_version=RENDER_VERSION,
     )  # fmt: skip
     vid, akey = variant_id(spec), ad_key(spec)
@@ -92,11 +138,13 @@ def main(argv=None) -> None:
     ap.add_argument("--recipe", default="build-up")
     ap.add_argument("--duration-ms", type=int, default=8000)
     ap.add_argument("--run-id", default=datetime.now(UTC).strftime("%Y%m%d-sample"))
+    ap.add_argument("--details", help="brand data: a JSON list of detail crops, one per circle")
     a = ap.parse_args(argv)
     for ratio in a.ratios.split(","):
         row = render_one(
             brand=a.brand, template_id=a.template, product=a.product, ratio=ratio,
             recipe_name=a.recipe, duration_ms=a.duration_ms, run_id=a.run_id,
+            details=json.loads(open(a.details).read()) if a.details else None,
         )  # fmt: skip
         out = {
             "ratio": ratio, "variant_id": row.variant_id, "ad_key": row.ad_key,

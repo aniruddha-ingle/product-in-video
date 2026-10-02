@@ -83,9 +83,7 @@ class VariantSpec:
     def duration_ms(self) -> int:
         ms = self.duration_s * 1000
         if ms != int(ms):
-            raise FormatError(
-                f"duration_s {self.duration_s} is not a whole number of ms"
-            )
+            raise FormatError(f"duration_s {self.duration_s} is not a whole number of ms")
         return int(ms)
 
 
