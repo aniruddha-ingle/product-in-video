@@ -3,9 +3,10 @@
     uv run python -m piv.deck.export RUN_ID [--draft]
 
 Reads `runs/<run_id>/manifest.jsonl` and `runs/<run_id>/review.json` (the evaluator's verdict
-per ad_key, written by the lead from the video-evaluator's report):
+**per variant**, written by the lead from the video-evaluator's report; a PASS on one ratio
+never releases another ratio of the same ad):
 
-    {"ads": {"<ad_key>": {"evaluator": "PASS", "at_sha": "...", "user_watched": false}}}
+    {"variants": {"<variant_id>": {"evaluator": "PASS", "at_sha": "...", "user_watched": false}}}
 
 Writes `runs/<run_id>/deck/deck.json` and copies each clip and poster beside it under
 `media/`. Only PASS ads are exported; `--draft` exports every ad, marked unreviewed, for a
@@ -45,7 +46,7 @@ def build_deck(run_id: str, *, draft: bool = False, demo: bool = False) -> dict:
     run = paths.runs_dir(run_id)
     rows = _latest(read_manifest(run / "manifest.jsonl"))
     review_path = run / "review.json"
-    review = json.loads(review_path.read_text())["ads"] if review_path.exists() else {}
+    review = json.loads(review_path.read_text())["variants"] if review_path.exists() else {}
     by_ad: dict[str, list] = defaultdict(list)
     for r in rows:
         by_ad[r.ad_key].append(r)
@@ -54,17 +55,21 @@ def build_deck(run_id: str, *, draft: bool = False, demo: bool = False) -> dict:
     paths.ensure_dir(out_dir / "media")
     items, skipped = [], []
     for akey in sorted(by_ad):
-        verdict = review.get(akey, {})
-        passed = verdict.get("evaluator") == "PASS"
-        if not passed and not (draft or demo):
-            skipped.append(akey)
-            continue
         group = sorted(
             by_ad[akey],
             key=lambda r: (
                 RATIO_ORDER.index(r.spec["ratio"]) if r.spec["ratio"] in RATIO_ORDER else 9
             ),
         )
+        # Only variants the evaluator passed, unless this is a draft or a labelled demo.
+        ok = [r for r in group if review.get(r.variant_id, {}).get("evaluator") == "PASS"]
+        passed = len(ok) == len(group)
+        if not (draft or demo):
+            group = ok
+        if not group:
+            skipped.append(akey)
+            continue
+        verdict = review.get(group[0].variant_id, {}) if passed or ok == group else {}
         spec = group[0].spec
         videos, images = [], []
         for r in group:
@@ -73,7 +78,14 @@ def build_deck(run_id: str, *, draft: bool = False, demo: bool = False) -> dict:
             shutil.copyfile(run / r.clip, out_dir / clip)
             shutil.copyfile(run / r.poster, out_dir / poster)
             videos.append(
-                {"src": clip, "ratio": ratio, "duration_s": spec["duration_s"], "poster": poster}
+                {
+                    "src": clip,
+                    "ratio": ratio,
+                    "duration_s": spec["duration_s"],
+                    "poster": poster,
+                    "reviewed": review.get(r.variant_id, {}).get("evaluator")
+                    or (DEMO_LABEL if demo else "NOT REVIEWED"),
+                }
             )
             images.append({"src": poster, "ratio": ratio})
         fills, sources = spec["fills"], spec["sources"]

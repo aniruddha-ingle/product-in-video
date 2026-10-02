@@ -39,7 +39,8 @@ def _run(run_id, ads):
 
 def test_only_passed_ads_are_exported():
     run = _run("deck-a", {"aaaaaaaaaaaa": ["1:1", "4:5", "9:16"], "bbbbbbbbbbbb": ["4:5"]})
-    (run / "review.json").write_text(json.dumps({"ads": {"aaaaaaaaaaaa": {"evaluator": "PASS"}}}))
+    passed = {f"aaaaaa{r}".ljust(12, "0"): {"evaluator": "PASS"} for r in ("11", "45", "916")}
+    (run / "review.json").write_text(json.dumps({"variants": passed}))
     deck = build_deck("deck-a")
     assert [i["ad_key"] for i in deck["items"]] == ["aaaaaaaaaaaa"]
     item = deck["items"][0]
@@ -67,3 +68,11 @@ def test_demo_items_are_labelled():
     item = build_deck("deck-c", demo=True)["items"][0]
     assert item["demo"] is True and "draft" not in item
     assert item["reviewed"]["evaluator"] == "demo · not evaluated"
+
+
+def test_a_pass_on_one_ratio_never_releases_another():
+    run = _run("deck-d", {"eeeeeeeeeeee": ["4:5", "9:16"]})
+    review = {"variants": {"eeeeee45".ljust(12, "0"): {"evaluator": "PASS"}}}
+    (run / "review.json").write_text(json.dumps(review))
+    item = build_deck("deck-d")["items"][0]
+    assert [v["ratio"] for v in item["videos"]] == ["4:5"]
