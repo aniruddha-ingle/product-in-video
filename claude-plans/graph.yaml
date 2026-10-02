@@ -158,3 +158,18 @@
   branch: null
   gate: light
   note: "the user, 2026-10-02, via gateway-1: the COO loved ff1e5a2f6199 (Jan-Ken 4:5); research the cutting edge on the psychology of an ad video like this"
+
+- id: p1-review-verdicts
+  plan: 0
+  spec: []
+  title: "Review page reads per-variant verdicts (review.json `variants`, as the deck export does); fixes a crash on real runs"
+  visible: true
+  priority: 1
+  user_override: null
+  depends_on: [p1-review-grid]
+  touches: ["src/piv/review/**", "tests/test_review*"]
+  agents: []
+  checkpoint: false
+  state: todo
+  branch: null
+  gate: light
