@@ -36,6 +36,13 @@ def _sha(path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def _check_names(headline: str, product_name: str | None) -> None:
+    """Never ship text that doesn't name this product. The template's own copy may name
+    another one (Steph's Godspeed PSD reuses her Hunter x Hunter line)."""
+    if product_name and product_name.upper() not in headline.upper().replace("\n", " "):
+        raise ValueError(f"headline {headline!r} does not name the product {product_name!r}")
+
+
 def _crop_key(c: dict) -> dict:
     """The fields of a detail crop that decide its pixels (they enter the variant id)."""
     return {k: c[k] for k in ("brand", "product", "image", "center", "zoom")} | {
@@ -77,13 +84,17 @@ def detail_swaps(template: dict, crops: list[dict]):
 
 
 def render_one(*, brand, template_id, product, ratio, recipe_name, duration_ms, run_id,
-               headline=None, hook_id="template", seed=0, details=None) -> ManifestRow:  # fmt: skip
+               headline=None, hook_id="template", seed=0, details=None,
+               product_name=None, copy_bank_sha=None) -> ManifestRow:  # fmt: skip
+    if not headline or hook_id == "template":
+        # Never fall back to template-baked copy (it may name another product): every
+        # headline is a copy-bank line, by id, from a recorded bank sha (copy-lead-1).
+        raise ValueError("a headline from the copy bank (--headline, --hook-id) is required")
+    _check_names(headline, product_name)
     tdir = paths.cutout_path("templates", template_id)
     tjson = tdir / "template.json"
     template = json.loads(tjson.read_text())
-    slots = {s: template["slots"][s]["layer"] for s in ("headline", "subline")}
-    texts = {l["id"]: l.get("text", {}).get("content") for l in template["layers"]}  # noqa: E741
-    headline = headline or texts[slots["headline"]]
+    _check_names(headline, product_name)
     recipe = load_recipe(recipe_name, duration_ms)
     swaps, placements = detail_swaps(template, details) if details else ({}, {})
     tl = build_timeline(
@@ -97,6 +108,7 @@ def render_one(*, brand, template_id, product, ratio, recipe_name, duration_ms, 
         seed=seed,
         sources={"template_sha256": _sha(tjson), "recipe_sha256": recipe_sha256(recipe),
                  "layout_sha256": tl.layout["sha256"], "ratios_sha256": _ratios_sha(),
+                 **({"copy_bank_sha": copy_bank_sha} if copy_bank_sha else {}),
                  "images": {**{f"cutout:templates/{template_id}/{p}": _sha(tdir / p) for p in used},
                             **_catalogue_shas(details or [])}},
         render_version=RENDER_VERSION,
@@ -138,6 +150,10 @@ def main(argv=None) -> None:
     ap.add_argument("--recipe", default="build-up")
     ap.add_argument("--duration-ms", type=int, default=8000)
     ap.add_argument("--run-id", default=datetime.now(UTC).strftime("%Y%m%d-sample"))
+    ap.add_argument("--headline", help="the hook copy (\\n between lines); default: the template's")
+    ap.add_argument("--hook-id", default="template", help="the copy bank's line id")
+    ap.add_argument("--copy-bank-sha", help="the copy bank's git sha the headline came from")
+    ap.add_argument("--product-name", help="refuse a headline that doesn't contain this name")
     ap.add_argument("--details", help="brand data: a JSON list of detail crops, one per circle")
     a = ap.parse_args(argv)
     for ratio in a.ratios.split(","):
@@ -145,6 +161,8 @@ def main(argv=None) -> None:
             brand=a.brand, template_id=a.template, product=a.product, ratio=ratio,
             recipe_name=a.recipe, duration_ms=a.duration_ms, run_id=a.run_id,
             details=json.loads(open(a.details).read()) if a.details else None,
+            headline=a.headline.replace("\\n", "\n") if a.headline else None,
+            hook_id=a.hook_id, product_name=a.product_name, copy_bank_sha=a.copy_bank_sha,
         )  # fmt: skip
         out = {
             "ratio": ratio, "variant_id": row.variant_id, "ad_key": row.ad_key,
