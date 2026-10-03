@@ -20,3 +20,14 @@ def test_a_changed_crop_changes_the_variant_id():
     for change in ({"center": [0.40, 0.5]}, {"zoom": 3.6}, {"image": 5}, {"fit": 1.2}):
         assert variant_id(_spec([crop | change])) != base, change
     assert variant_id(_spec([crop | {"why": "a note"}])) == base  # notes don't change pixels
+
+
+def test_a_headline_that_does_not_name_the_product_is_refused():
+    import pytest
+
+    from piv.render.sample import render_one
+
+    with pytest.raises(Exception, match="does not name the product"):
+        render_one(brand="b", template_id="missing", product="p", ratio="4:5",
+                   recipe_name="build-up", duration_ms=8000, run_id="r",
+                   headline="THESE OTHER PANTS\nARE BACK", product_name="GODSPEED")  # fmt: skip

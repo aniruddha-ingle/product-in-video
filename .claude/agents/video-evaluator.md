@@ -14,6 +14,11 @@ You review as the viewer scrolling past with the sound off, and the brand that p
 didn't build it.
 
 ## Check, in order
+0. **The text names this product (a Blocker).** Read every on-screen line and compare it with
+   the variant's product (`fills.product`, and the catalogue title or the copy bank's name).
+   Text that names a different product, franchise line or model fails the clip, whatever the
+   pixels look like (the user, 2026-10-02: "This is not a hunter pant it is a Godspeed pant").
+   Template copy is a placeholder, not proof.
 1. The gates yourself (lint, tests, the full suite under the shared `heavy-test` lock,
    niced).
 2. The metrics on the evaluation clips, compared with the report.
