@@ -86,14 +86,14 @@ def detail_swaps(template: dict, crops: list[dict]):
 def render_one(*, brand, template_id, product, ratio, recipe_name, duration_ms, run_id,
                headline=None, hook_id="template", seed=0, details=None,
                product_name=None, copy_bank_sha=None) -> ManifestRow:  # fmt: skip
-    if headline:
-        _check_names(headline, product_name)
+    if not headline or hook_id == "template":
+        # Never fall back to template-baked copy (it may name another product): every
+        # headline is a copy-bank line, by id, from a recorded bank sha (copy-lead-1).
+        raise ValueError("a headline from the copy bank (--headline, --hook-id) is required")
+    _check_names(headline, product_name)
     tdir = paths.cutout_path("templates", template_id)
     tjson = tdir / "template.json"
     template = json.loads(tjson.read_text())
-    slots = {s: template["slots"][s]["layer"] for s in ("headline", "subline")}
-    texts = {l["id"]: l.get("text", {}).get("content") for l in template["layers"]}  # noqa: E741
-    headline = headline or texts[slots["headline"]]
     _check_names(headline, product_name)
     recipe = load_recipe(recipe_name, duration_ms)
     swaps, placements = detail_swaps(template, details) if details else ({}, {})

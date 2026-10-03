@@ -30,4 +30,15 @@ def test_a_headline_that_does_not_name_the_product_is_refused():
     with pytest.raises(Exception, match="does not name the product"):
         render_one(brand="b", template_id="missing", product="p", ratio="4:5",
                    recipe_name="build-up", duration_ms=8000, run_id="r",
-                   headline="THESE OTHER PANTS\nARE BACK", product_name="GODSPEED")  # fmt: skip
+                   headline="THESE OTHER PANTS\nARE BACK", hook_id="h001",
+                   product_name="GODSPEED")  # fmt: skip
+
+
+def test_template_copy_is_never_used():
+    import pytest
+
+    from piv.render.sample import render_one
+
+    with pytest.raises(ValueError, match="copy bank"):
+        render_one(brand="b", template_id="missing", product="p", ratio="4:5",
+                   recipe_name="build-up", duration_ms=8000, run_id="r")  # fmt: skip
